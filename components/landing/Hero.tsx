@@ -1,0 +1,174 @@
+"use client"
+
+import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import { ArrowRight, Shield, Zap, CheckCircle, FileText } from "lucide-react"
+import Link from "next/link"
+
+const Hero = () => {
+  const stats = [
+    { number: "97%", label: "Taux de réussite" },
+    { number: "2 min", label: "Temps moyen" },
+    { number: "1000+", label: "Clients satisfaits" }
+  ]
+
+  const problemSolved = [
+    "Réclamation CAF non versement",
+    "Contestation radiation Pôle emploi", 
+    "CPAM remboursement refusé",
+    "Trop-perçu à contester"
+  ]
+
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.1, scale: 1 }}
+          transition={{ duration: 2, ease: "easeOut" }}
+          className="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl"
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.1, scale: 1 }}
+          transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
+          className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500 rounded-full blur-3xl"
+        />
+      </div>
+
+      <div className="container-custom relative z-10">
+        <div className="text-center max-w-5xl mx-auto">
+          
+          {/* Badge annonce */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center gap-2 glass rounded-full px-6 py-3 mb-8 border border-blue-400/20"
+          >
+            <Zap className="w-4 h-4 text-blue-400" />
+            <span className="text-sm font-medium text-blue-100">
+              🚀 Nouveau : IA expert en droit administratif français
+            </span>
+          </motion.div>
+
+          {/* Titre principal */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+          >
+            Vos <span className="gradient-text">droits défendus</span>
+            <br />
+            en 2 minutes
+          </motion.h1>
+
+          {/* Sous-titre */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
+          >
+            Générez des <strong className="text-white">courriers de réclamation professionnels</strong> 
+            {" "}pour CAF, CPAM, Pôle Emploi. Fini la galère administrative !
+          </motion.p>
+
+          {/* Problèmes résolus */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto mb-10"
+          >
+            {problemSolved.map((problem, index) => (
+              <motion.div
+                key={problem}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+                className="flex items-center gap-3 glass rounded-lg px-4 py-3"
+              >
+                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                <span className="text-gray-200 text-sm font-medium">{problem}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* CTA principal */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
+          >
+            <Button size="xl" className="group">
+              <Link href="/wizard">
+                <FileText className="w-5 h-5 mr-2" />
+                Créer mon courrier maintenant
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+            
+            <Button variant="outline" size="xl">
+              <Link href="#comment-ca-marche">
+                Comment ça marche ?
+              </Link>
+            </Button>
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.2 }}
+            className="grid grid-cols-3 gap-8 max-w-md mx-auto"
+          >
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
+                className="text-center"
+              >
+                <div className="text-2xl md:text-3xl font-bold gradient-text mb-1">
+                  {stat.number}
+                </div>
+                <div className="text-sm text-gray-400">{stat.label}</div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Trust indicators */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.6 }}
+            className="mt-16 flex flex-wrap justify-center items-center gap-6 text-sm text-gray-400"
+          >
+            <div className="flex items-center gap-2">
+              <Shield className="w-4 h-4 text-green-400" />
+              <span>Conformité juridique garantie</span>
+            </div>
+            <div className="hidden md:block w-px h-4 bg-gray-600" />
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-blue-400" />
+              <span>Paiement sécurisé</span>
+            </div>
+            <div className="hidden md:block w-px h-4 bg-gray-600" />
+            <div className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-purple-400" />
+              <span>Résultat immédiat</span>
+            </div>
+          </motion.div>
+
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Hero
