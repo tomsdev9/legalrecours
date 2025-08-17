@@ -9,14 +9,14 @@ const Hero = () => {
   const stats = [
     { number: "97%", label: "Taux de réussite" },
     { number: "2 min", label: "Temps moyen" },
-    { number: "1000+", label: "Clients satisfaits" }
+    { number: "1000+", label: "Clients satisfaits" },
   ]
 
   const problemSolved = [
     "Réclamation CAF non versement",
-    "Contestation radiation Pôle emploi", 
+    "Contestation radiation Pôle emploi",
     "CPAM remboursement refusé",
-    "Trop-perçu à contester"
+    "Trop-perçu à contester",
   ]
 
   return (
@@ -39,7 +39,6 @@ const Hero = () => {
 
       <div className="container-custom relative z-10">
         <div className="text-center max-w-5xl mx-auto">
-          
           {/* Badge annonce */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -72,27 +71,29 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
           >
-            Générez des <strong className="text-white">courriers de réclamation professionnels</strong> 
-            {" "}pour CAF, CPAM, Pôle Emploi. Fini la galère administrative !
+            Générez des <strong className="text-white">courriers de réclamation professionnels</strong>{" "}
+            pour CAF, CPAM, Pôle Emploi. Fini la galère administrative !
           </motion.p>
 
-          {/* Problèmes résolus */}
+          {/* Problèmes résolus – Pills cloud */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto mb-10"
+            className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto mb-12"
           >
-            {problemSolved.map((problem, index) => (
+            {problemSolved.map((p, i) => (
               <motion.div
-                key={problem}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
-                className="flex items-center gap-3 glass rounded-lg px-4 py-3"
+                key={p}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.7 + i * 0.05 }}
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-white/10 to-white/5 p-[1px]"
               >
-                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                <span className="text-gray-200 text-sm font-medium">{problem}</span>
+                <span className="inline-flex items-center gap-2 rounded-full px-4 py-2 glass">
+                  <CheckCircle className="w-4 h-4 text-green-400" />
+                  <span className="text-sm sm:text-base text-gray-200">{p}</span>
+                </span>
               </motion.div>
             ))}
           </motion.div>
@@ -104,16 +105,22 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 1 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           >
-            <Button size="xl" className="group">
-              <Link href="/wizard">
-                <FileText className="w-5 h-5 mr-2" />
-                Créer mon courrier maintenant
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            <Button asChild size="xl" className="group px-6">
+              <Link
+                href="/wizard"
+                className="inline-flex items-center gap-2 flex-nowrap whitespace-nowrap max-w-full min-w-0"
+              >
+                <FileText className="w-5 h-5 shrink-0 self-center" />
+                <span className="truncate leading-none">Créer mon courrier maintenant</span>
+                <ArrowRight className="w-5 h-5 shrink-0 self-center transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
-            
-            <Button variant="outline" size="xl">
-              <Link href="#comment-ca-marche">
+
+            <Button variant="outline" size="xl" asChild className="px-6">
+              <Link
+                href="#comment-ca-marche"
+                className="inline-flex items-center gap-2 flex-nowrap whitespace-nowrap"
+              >
                 Comment ça marche ?
               </Link>
             </Button>
@@ -164,7 +171,6 @@ const Hero = () => {
               <span>Résultat immédiat</span>
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>
