@@ -20,8 +20,8 @@ const Hero = () => {
   ]
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated background elements */}
+    <section className="relative min-h-[82vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-12 sm:pt-16">
+      {/* Background animé */}
       <div className="absolute inset-0">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
@@ -52,16 +52,19 @@ const Hero = () => {
             </span>
           </motion.div>
 
-          {/* Titre principal */}
+          {/* Titre principal – anti-hyphens + meilleure réactivité */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
+            className="font-bold mb-6 leading-tight tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl mx-auto max-w-[1100px] px-2 break-normal"
+            style={{ hyphens: "none" }} // empêche "recla-mez"
           >
-            Vos <span className="gradient-text">droits défendus</span>
-            <br />
-            en 2 minutes
+            <span className="block">
+              Contestez, demandez un réexamen,{" "}
+              <span className="whitespace-nowrap">réclamez&nbsp;:</span>
+            </span>
+            <span className="block gradient-text mt-2">Lettre prête en 2 minutes</span>
           </motion.h1>
 
           {/* Sous-titre */}
@@ -69,13 +72,12 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
+            className="text-base sm:text-lg md:text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
           >
-            Générez des <strong className="text-white">courriers de réclamation professionnels</strong>{" "}
-            pour CAF, CPAM, Pôle Emploi. Fini la galère administrative !
+            Adaptée à votre cas (trop-perçu, non-versement, radiation…). PDF A4 soigné.
           </motion.p>
 
-          {/* Problèmes résolus – Pills cloud */}
+          {/* Problèmes résolus – Pills */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -105,7 +107,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 1 }}
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           >
-            <Button asChild size="xl" className="group px-6">
+            <Button size="xl" className="group px-6">
               <Link
                 href="/wizard"
                 className="inline-flex items-center gap-2 flex-nowrap whitespace-nowrap max-w-full min-w-0"
@@ -116,7 +118,7 @@ const Hero = () => {
               </Link>
             </Button>
 
-            <Button variant="outline" size="xl" asChild className="px-6">
+            <Button variant="outline" size="xl" className="px-6">
               <Link
                 href="#comment-ca-marche"
                 className="inline-flex items-center gap-2 flex-nowrap whitespace-nowrap"
@@ -131,7 +133,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
-            className="grid grid-cols-3 gap-8 max-w-md mx-auto"
+            className="grid grid-cols-3 gap-6 sm:gap-8 max-w-md mx-auto"
           >
             {stats.map((stat, index) => (
               <motion.div
@@ -141,20 +143,20 @@ const Hero = () => {
                 transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
                 className="text-center"
               >
-                <div className="text-2xl md:text-3xl font-bold gradient-text mb-1">
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold gradient-text mb-1">
                   {stat.number}
                 </div>
-                <div className="text-sm text-gray-400">{stat.label}</div>
+                <div className="text-xs sm:text-sm text-gray-400">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
 
-          {/* Trust indicators */}
+          {/* Indicateurs de confiance */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1.6 }}
-            className="mt-16 flex flex-wrap justify-center items-center gap-6 text-sm text-gray-400"
+            className="mt-14 sm:mt-16 flex flex-wrap justify-center items-center gap-6 text-xs sm:text-sm text-gray-400"
           >
             <div className="flex items-center gap-2">
               <Shield className="w-4 h-4 text-green-400" />
