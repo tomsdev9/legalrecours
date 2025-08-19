@@ -157,7 +157,7 @@ const HowItWorks = () => {
         >
           <h3 className="text-2xl font-bold text-center mb-6 text-gray-900">On vous guide <span className="gradient-text">jusqu&apos;au bout</span></h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {journey.map((j, idx) => {
+            {journey.map((j) => {
               const Icon = j.icon
               return (
                 <div key={j.title} className="glass-white border border-gray-100 rounded-xl p-4 flex items-start gap-3">

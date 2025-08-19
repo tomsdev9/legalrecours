@@ -58,7 +58,7 @@ const OrganismStep = () => {
         className="text-center"
       >
         <p className="text-secondary text-lg leading-relaxed max-w-2xl mx-auto">
-          Choisissez l'organisme administratif concerné. Notre IA connaît les procédures
+          Choisissez l&apos;organisme administratif concerné. Notre IA connaît les procédures
           spécifiques de chacun.
         </p>
       </motion.div>

@@ -2,7 +2,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { motion } from "framer-motion"
+
 import Link from "next/link"
 import useWizard from "@/hooks/useWizard"
 import { ORGANISMS, type CaseId } from "@/lib/wizard-data"
