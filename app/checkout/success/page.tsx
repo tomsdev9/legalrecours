@@ -159,6 +159,15 @@ export default function SuccessPage() {
   const [generating, setGenerating] = useState(false)
   const [analysis, setAnalysis] = useState<Analysis | null>(null)
 
+    // Auto-téléchargement à l'arrivée sur la page
+    const didAuto = React.useRef(false)
+    useEffect(() => {
+      if (!didAuto.current && status === "ok" && payload && !blobUrl && !generating) {
+        didAuto.current = true
+        handleGenerateAndDownload()
+      }
+    }, [status, payload, blobUrl, generating])
+
   useEffect(() => {
     const run = async () => {
       const sessionId = new URLSearchParams(window.location.search).get("session_id")
@@ -232,28 +241,27 @@ export default function SuccessPage() {
         <p className="text-secondary">Téléchargez-le puis joignez les pièces recommandées avant envoi.</p>
 
         {!noPayload && (
-          <>
-            {!blobUrl ? (
-              <button
-                onClick={handleGenerateAndDownload}
-                disabled={generating}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-green-primary text-white bg-green-primary hover:brightness-95 mt-3 disabled:opacity-60"
-              >
-                {generating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
-                {generating ? "Génération du PDF…" : "Télécharger le PDF"}
-              </button>
-            ) : (
-              <a
-                href={blobUrl}
-                download={`courrier-${payload.caseId.toLowerCase()}.pdf`}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-green-primary text-white bg-green-primary hover:brightness-95 mt-3"
-              >
-                <Download className="w-5 h-5" />
-                Retélécharger le PDF
-              </a>
-            )}
-          </>
-        )}
+  <div className="mt-3">
+    {!blobUrl ? (
+      <button
+        disabled
+        className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-green-primary text-white bg-green-primary opacity-80"
+      >
+        <Loader2 className="w-5 h-5 animate-spin" />
+        Préparation du PDF…
+      </button>
+    ) : (
+      <a
+        href={blobUrl}
+        download={`courrier-${payload.caseId.toLowerCase()}.pdf`}
+        className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-green-primary text-white bg-green-primary hover:brightness-95"
+      >
+        <Download className="w-5 h-5" />
+        Retélécharger le PDF
+      </a>
+    )}
+  </div>
+)}
 
         {noPayload && (
           <div className="mt-4 text-sm text-muted">
@@ -289,23 +297,6 @@ export default function SuccessPage() {
           </p>
         </div>
       </div>
-
-      {/* Ce que contiendra le document */}
-      <div className="glass-white rounded-2xl p-5 border border-primary">
-        <h3 className="text-primary font-medium mb-3">Votre document contiendra :</h3>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-primary text-sm">
-          <li className="flex items-start gap-2"><span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" /> Base légale et structure attendue (en-tête, objet, demandes)</li>
-          <li className="flex items-start gap-2"><span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" /> Rappel des délais applicables et voie de recours</li>
-          <li className="flex items-start gap-2"><span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" /> Liste des pièces justificatives à joindre</li>
-          <li className="flex items-start gap-2"><span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" /> Coordonnées complètes de l&apos;organisme destinataire</li>
-          <li className="flex items-start gap-2"><span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" /> Mentions recommandées pour l&apos;envoi en LRAR</li>
-          <li className="flex items-start gap-2"><span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" /> Formulation professionnelle et claire de vos demandes</li>
-        </ul>
-        <div className="mt-3 text-xs text-muted">
-          <strong className="text-primary">Score contenu :</strong> 6 points clés couverts pour maximiser l&apos;efficacité.
-        </div>
-      </div>
-
       {/* Checklist pièces à joindre */}
       <div className="rounded-2xl border border-green-primary/40 p-6 bg-white">
         <div className="text-primary font-semibold mb-3">📎 Pièces à joindre (recommandées)</div>

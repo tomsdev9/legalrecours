@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import WizardContainer from '@/components/wizard/WizardContainer'
 
 export const metadata: Metadata = {
-  title: 'Assistant IA - Générer votre courrier | LegalRecours.fr',
+  title: 'LegalRecours - Assistant IA administratif',
   description: 'Générez votre courrier de réclamation personnalisé en 2 minutes. CAF, CPAM, France Travail - Conformité juridique garantie.',
   keywords: 'courrier réclamation, CAF, CPAM, France Travail, assistant juridique, IA, droit administratif',
   openGraph: {

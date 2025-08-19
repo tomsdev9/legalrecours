@@ -11,16 +11,24 @@ import UserInfoStep from "./UserInfoStep"
 import ReviewStep from "./ReviewStep"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, ArrowRight, AlertCircle } from "lucide-react"
+import { ScrollToTopOnChange } from "@/components/ScrollToTop" // 👈 AJOUT
+
+function LegalRecoursLogo({ className = "h-8" }: { className?: string }) {
+  return (
+    <svg className={className + " w-auto"} viewBox="0 0 760 120" role="img" aria-label="LegalRecours" xmlns="http://www.w3.org/2000/svg">
+      <text
+        x="0" y="86" fill="#222223"
+        fontFamily="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
+        fontWeight="800" fontSize="78" letterSpacing="-1.5"
+      >
+        LegalRecours
+      </text>
+    </svg>
+  )
+}
 
 const Inner = () => {
-  const {
-    state,
-    currentStepData,
-    navigation,
-    validateCurrentStep,
-    setError,
-    clearError,
-  } = useWizard()
+  const { state, currentStepData, navigation, validateCurrentStep, setError, clearError } = useWizard()
 
   const renderCurrentStep = () => {
     const steps = {
@@ -51,6 +59,11 @@ const Inner = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* 👇 Ancre pour le scroll en haut */}
+      <div id="wizard-top" />
+      {/* 👇 Déclenche le scroll à chaque changement d’étape */}
+      <ScrollToTopOnChange dep={state.currentStep} />
+
       {/* Background blobs - adapté fond blanc */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
@@ -75,15 +88,9 @@ const Inner = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="flex items-center gap-3"
+              className="flex items-center"
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-lg">LR</span>
-              </div>
-              <div>
-                <h1 className="text-gray-900 font-bold text-xl">LegalRecours</h1>
-                <p className="text-muted text-sm">Assistant juridique IA</p>
-              </div>
+              <LegalRecoursLogo className="h-9 sm:h-10" />
             </motion.div>
 
             <motion.div

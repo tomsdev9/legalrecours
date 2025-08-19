@@ -13,7 +13,7 @@ const HowItWorks = () => {
       title: "Choisissez votre organisme",
       description: "CAF, CPAM ou France Travail",
       details: "Sélectionnez l'organisme concerné par votre problème administratif.",
-      color: "from-gray-700 to-gray-900", // Noir/gris foncé
+      color: "from-gray-700 to-gray-900",
     },
     {
       id: 2,
@@ -21,7 +21,7 @@ const HowItWorks = () => {
       title: "Décrivez votre situation",
       description: "Quelques questions simples",
       details: "Nous identifions le bon motif juridique et les pièces utiles.",
-      color: "from-gray-700 to-gray-900", // Noir/gris foncé
+      color: "from-gray-700 to-gray-900",
     },
     {
       id: 3,
@@ -29,11 +29,9 @@ const HowItWorks = () => {
       title: "Recevez votre courrier",
       description: "PDF professionnel en 30 secondes",
       details: "Document structuré, conforme et prêt à être envoyé en LRAR.",
-      color: "from-gray-700 to-gray-900", // Noir/gris foncé
+      color: "from-gray-700 to-gray-900",
     },
   ]
-
-  const benefits: string[] = ["Références légales", "Délais respectés", "Formulation précise", "Adresses exactes"]
 
   const journey: { icon: React.ComponentType<{ className?: string }>; title: string; note: string }[] = [
     { icon: CheckCircle, title: "Diagnostic rapide", note: "Vérification de la contestabilité de la décision." },
@@ -44,7 +42,7 @@ const HowItWorks = () => {
 
   return (
     <section id="comment-ca-marche" className="py-8 sm:py-12 lg:py-16 relative overflow-hidden">
-      {/* Background - adapté fond blanc */}
+      {/* Background */}
       <div className="absolute inset-0">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
@@ -116,37 +114,6 @@ const HowItWorks = () => {
           })}
         </div>
 
-        {/* Pourquoi ça marche */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="glass-white border border-gray-100 rounded-2xl p-8 mb-12 max-w-4xl mx-auto"
-        >
-          <h3 className="text-2xl font-bold text-center mb-8 text-gray-900">
-            Pourquoi nos courriers <span className="gradient-text">fonctionnent</span> ?
-          </h3>
-
-          <div className="flex flex-wrap justify-center gap-3">
-            {benefits.map((benefit, i) => (
-              <motion.div
-                key={benefit}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.5 + i * 0.07 }}
-                viewport={{ once: true }}
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-gray-100 to-gray-50 p-[1px] border border-gray-200"
-              >
-                <span className="inline-flex items-center gap-2 rounded-full px-4 py-2 bg-white">
-                  <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
-                  <span className="text-sm md:text-base text-gray-700 whitespace-nowrap">{benefit}</span>
-                </span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
         {/* Timeline "jusqu'au bout" */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -155,18 +122,20 @@ const HowItWorks = () => {
           viewport={{ once: true }}
           className="max-w-4xl mx-auto mb-12 sm:mb-16"
         >
-          <h3 className="text-2xl font-bold text-center mb-6 text-gray-900">On vous guide <span className="gradient-text">jusqu&apos;au bout</span></h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <h3 className="text-2xl font-bold text-center mb-6 text-gray-900">
+            On vous guide <span className="gradient-text">jusqu&apos;au bout</span>
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {journey.map((j) => {
               const Icon = j.icon
               return (
-                <div key={j.title} className="glass-white border border-gray-100 rounded-xl p-4 flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-gray-600" />
+                <div key={j.title} className="glass-white border border-gray-100 rounded-xl p-6 flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
+                    <Icon className="w-6 h-6 text-gray-600" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">{j.title}</p>
-                    <p className="text-sm text-muted">{j.note}</p>
+                    <p className="font-semibold text-gray-900 text-base md:text-lg">{j.title}</p>
+                    <p className="text-sm md:text-base text-muted">{j.note}</p>
                   </div>
                 </div>
               )

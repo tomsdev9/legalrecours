@@ -344,25 +344,23 @@ const UserInfoStep = () => {
         transition={{ duration: 0.6, delay: 0.6 }}
         className="max-w-3xl mx-auto"
       >
-        <div className="glass-white rounded-2xl p-6 border border-primary">
-          <h3 className="text-lg font-semibold text-primary mb-4 text-center">
-            🔒 Confidentialité et sécurité
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div>
-              <h4 className="text-green-primary font-medium mb-2">Données sécurisées</h4>
-              <p className="text-secondary leading-relaxed">
-                Vos informations sont utilisées uniquement pour générer votre courrier.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-green-primary font-medium mb-2">Non-stockage</h4>
-              <p className="text-secondary leading-relaxed">
-                Aucune donnée personnelle n&apos;est conservée après génération.
-              </p>
-            </div>
-          </div>
-        </div>
+        <div className="glass-white rounded-2xl p-5 sm:p-6 border border-primary">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+    <div>
+      <h4 className="text-green-primary font-medium text-sm sm:text-base mb-1">Données sécurisées</h4>
+      <p className="text-secondary text-xs sm:text-sm leading-snug">
+        Vos informations sont utilisées uniquement pour générer votre courrier.
+      </p>
+    </div>
+    <div>
+      <h4 className="text-green-primary font-medium text-sm sm:text-base mb-1">Non-stockage</h4>
+      <p className="text-secondary text-xs sm:text-sm leading-snug">
+        Aucune donnée personnelle n&apos;est conservée après génération.
+      </p>
+    </div>
+  </div>
+</div>
+
       </motion.div>
 
       {/* Recap */}

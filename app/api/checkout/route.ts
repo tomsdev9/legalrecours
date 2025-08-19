@@ -13,9 +13,7 @@ type Payload = {
   userInfo: Record<string, unknown>
 }
 
-// util: ne garder que le nécessaire + éviter les grosses valeurs
 function buildMinimalPayload(p: Payload): Payload {
-  // on passe tel quel (ton context est court). Si besoin, tu peux tronquer certaines strings ici.
   return {
     organism: p.organism,
     caseId: p.caseId,
@@ -34,7 +32,7 @@ function buildMinimalPayload(p: Payload): Payload {
   }
 }
 
-// util: découpage metadata (<=500 chars / valeur)
+// découpage metadata (<= 500 chars)
 function chunk(str: string, size = 480): string[] {
   const out: string[] = []
   for (let i = 0; i < str.length; i += size) out.push(str.slice(i, i + size))
@@ -48,47 +46,36 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "missing_payload" }, { status: 400 })
     }
 
-    // origine pour success_url/cancel_url
-    const origin =
-      req.headers.get("origin") ||
-      `${req.headers.get("x-forwarded-proto") || "http"}://${req.headers.get("host")}`
+    // ✅ Utilise ton domaine prod si présent, sinon fallback headers
+    const siteUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      `${req.headers.get("x-forwarded-proto") || "https"}://${req.headers.get("host")}`
 
-    // construire un payload compact et le stocker en chunks
     const minimal = buildMinimalPayload(payload)
     const json = JSON.stringify(minimal)
     const parts = chunk(json, 480)
     const md: Record<string, string> = { plc: String(parts.length) }
     parts.forEach((part, i) => (md[`pl${i}`] = part))
 
+    const email =
+      typeof minimal.userInfo?.["email"] === "string" && minimal.userInfo["email"] ? String(minimal.userInfo["email"]) : undefined
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      // 7,90 € TTC (prix unitaire)
-      line_items: [
-        {
-          price_data: {
-            currency: "eur",
-            unit_amount: 790,
-            product_data: {
-              name: "Lettre de réclamation PDF (IA)",
-              description: "Génération d’un courrier PDF A4 personnalisé",
-            },
-          },
-          quantity: 1,
-        },
-      ],
+      // ✅ Utilise ton Price LIVE (ENV: STRIPE_PRICE_ID)
+      line_items: [{ price: process.env.STRIPE_PRICE_ID!, quantity: 1 }],
       allow_promotion_codes: true,
-      success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/wizard`,
-      metadata: md, // <<< payload stocké ici
+      success_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${siteUrl}/wizard`,
+      metadata: md,
       payment_intent_data: {
         description: "LegalRecours - Génération courrier PDF",
       },
-      // (optionnel) billing_address_collection: "auto",
+      customer_email: email, // ✅ reçu email Stripe
     })
 
     return NextResponse.json({ id: session.id, url: session.url })
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error("checkout error", err)
     return NextResponse.json({ error: "checkout_failed" }, { status: 500 })
   }

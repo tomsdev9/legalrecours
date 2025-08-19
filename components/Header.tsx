@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Globe } from "lucide-react"
@@ -40,12 +40,61 @@ export default function Header() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
+  // ===== Auto-hide: reste cachée tant que ça scroll; ne revient qu’après arrêt soutenu =====
+  const [hidden, setHidden] = useState(false)
+  const lastY = useRef(0)
+  const idleTimer = useRef<number | null>(null)
+  const startedHiding = useRef(false) // évite le flicker en tout début
+
+  // tuning
+  const IDLE_DELAY = 1100 // ms sans scroll avant réapparition
+  const DOWN_DELTA_HIDE = 2 // sensibilité descente
+  const MIN_Y_TO_ENABLE = 10 // toujours visible en haut de page
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    onScroll()
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 20)
+
+      // Toujours visible tout en haut
+      if (y <= MIN_Y_TO_ENABLE) {
+        setHidden(false)
+        startedHiding.current = false
+        if (idleTimer.current) window.clearTimeout(idleTimer.current)
+        lastY.current = y
+        return
+      }
+
+      const delta = y - lastY.current
+
+      // Si on descend un peu -> cacher (et rester caché)
+      if (delta > DOWN_DELTA_HIDE && !open) {
+        setHidden(true)
+        startedHiding.current = true
+      }
+
+      // On n’affiche JAMAIS sur scroll up (on attend l’arrêt), donc pas de logique delta < 0
+
+      // Debounce d’inactivité : seule condition pour réapparaitre
+      if (idleTimer.current) window.clearTimeout(idleTimer.current)
+      idleTimer.current = window.setTimeout(() => {
+        if (!open) {
+          // on ne réapparait que si on a effectivement commencé à cacher suite à un scroll
+          if (startedHiding.current) setHidden(false)
+        }
+      }, IDLE_DELAY)
+
+      lastY.current = y
+    }
+
+    // init + listener
+    lastY.current = window.scrollY
     window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      if (idleTimer.current) window.clearTimeout(idleTimer.current)
+    }
+  }, [open])
 
   return (
     <>
@@ -55,8 +104,11 @@ export default function Header() {
       >
         <motion.div
           initial={{ y: -80, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          animate={{
+            y: hidden ? -90 : 0,
+            opacity: hidden ? 0 : 1,
+          }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
           className={[
             "rounded-3xl border backdrop-blur-xl shadow-lg transition-all duration-300",
             scrolled ? "bg-white/95 border-gray-200 shadow-xl" : "bg-white/90 border-gray-100",

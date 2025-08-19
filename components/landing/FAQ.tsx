@@ -117,10 +117,17 @@ const FAQ = () => {
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200"
+                className="w-full px-6 py-5 text-left 
+                           grid grid-cols-[1fr_auto] items-start gap-3 hover:bg-gray-50 transition-colors duration-200
+                           sm:flex sm:items-center sm:justify-between"
               >
-                <h3 className="text-lg font-semibold text-gray-900 pr-4">{faq.question}</h3>
-                <div className="flex-shrink-0">
+                {/* Titre : mobile petit + empêche l'icône de passer à la ligne */}
+                <h3 className="min-w-0 !text-[14px] sm:!text-lg leading-tight font-semibold text-gray-900 pr-2 sm:pr-4">
+                  {faq.question}
+                </h3>
+
+                {/* Icône toujours à droite (ne rétrécit pas) */}
+                <div className="flex-shrink-0 mt-0.5 sm:mt-0">
                   {openIndex === index ? 
                     <Minus className="w-5 h-5 text-gray-600" /> : 
                     <Plus className="w-5 h-5 text-gray-600" />

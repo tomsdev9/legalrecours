@@ -9,6 +9,32 @@ import CookiePreferencesButton from "@/components/CookiePreferencesButton"; // b
 
 const inter = Inter({ subsets: ["latin"] });
 
+/** Logo texte SVG */
+function LegalRecoursLogo({ className = "h-8" }: { className?: string }) {
+  return (
+    <svg
+      className={className + " w-auto block"} // block pour supprimer l'espace inline
+      viewBox="0 0 760 120"
+      role="img"
+      aria-label="LegalRecours"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <text
+        x="50%"                // centré
+        y="86"
+        textAnchor="middle"    // centre l'ancrage
+        fill="#222223"
+        fontFamily="Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
+        fontWeight="800"
+        fontSize="78"
+        letterSpacing="-1.5"
+      >
+        LegalRecours
+      </text>
+    </svg>
+  );
+}
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://legalrecours.fr"),
   title: {
@@ -102,52 +128,92 @@ export default function RootLayout({
           {/* Footer global */}
           <footer className="relative z-10 border-t border-gray-200 bg-white/90 backdrop-blur-sm">
             <div className="container-custom py-8">
-              <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">LR</span>
-                  </div>
-                  <span className="text-gray-900 font-semibold">LegalRecours.fr</span>
+              {/* TOP */}
+              <div className="flex flex-col items-center gap-6 md:grid md:grid-cols-3 md:items-start">
+                {/* Logo */}
+                <div className="w-full">
+                  <Link
+                    href="/"
+                    className="flex justify-center md:justify-start mx-auto md:mx-0"
+                    aria-label="Accueil LegalRecours"
+                  >
+                    <LegalRecoursLogo className="h-8" />
+                  </Link>
                 </div>
 
                 {/* Liens légaux */}
-                <div className="flex flex-wrap gap-6 text-sm text-gray-600">
-                  <Link href="/conditions-utilisation" className="hover:text-gray-900 transition-colors">
-                    Conditions d’utilisation
-                  </Link>
-                  <Link href="/politique-de-confidentialite" className="hover:text-gray-900 transition-colors">
-                    Politique de confidentialité
-                  </Link>
-                  <Link href="/dpa" className="hover:text-gray-900 transition-colors">
-                    DPA
-                  </Link>
-                  <a href="mailto:contact@legalrecours.fr" className="hover:text-gray-900 transition-colors">
-                    Contact
-                  </a>
-                  {/* Bouton client (pas d'onClick dans un Server Component) */}
-                  <CookiePreferencesButton className="underline underline-offset-2 hover:text-gray-900 transition-colors" />
-                </div>
+                <nav aria-label="Liens légaux" className="w-full">
+                  <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-600">
+                    <li>
+                      <Link href="/conditions-utilisation" className="hover:text-gray-900 transition-colors">
+                        Conditions d’utilisation
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/politique-de-confidentialite" className="hover:text-gray-900 transition-colors">
+                        Politique de confidentialité
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/dpa" className="hover:text-gray-900 transition-colors">
+                        DPA
+                      </Link>
+                    </li>
+                    <li>
+                      <a href="mailto:contact@legalrecours.fr" className="hover:text-gray-900 transition-colors">
+                        Contact
+                      </a>
+                    </li>
+                    <li>
+                      {/* Composant client */}
+                      <CookiePreferencesButton className="underline underline-offset-2 hover:text-gray-900 transition-colors" />
+                    </li>
+                  </ul>
+                </nav>
 
-                <div className="flex gap-4">
+                {/* Réseaux sociaux */}
+                <div className="flex justify-center md:justify-end gap-6">
+                  {/* TikTok */}
                   <a
                     href="https://www.tiktok.com/@legalrecours"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-gray-900 transition-colors"
+                    aria-label="TikTok LegalRecours"
+                    className="hover:scale-110 transition-transform"
                   >
-                    TikTok
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className="w-6 h-6">
+                      <path fill="#000" d="M128 0c70.7 0 128 57.3 128 128S198.7 256 128 256 0 198.7 0 128 57.3 0 128 0Z"/>
+                      <path fill="#fff" d="M176.6 98.1c-7.6-5.2-13.7-12.5-16.5-21.4a41 41 0 0 1-1.1-8.3h-20.9v84.2c0 9.1-7.4 16.5-16.5 16.5-9.1 0-16.5-7.4-16.5-16.5 0-9.1 7.4-16.5 16.5-16.5 1.4 0 2.7.2 4 .5V121a38 38 0 0 0-4-.2c-21 0-38.1 17.1-38.1 38.1s17.1 38.1 38.1 38.1 38.1-17.1 38.1-38.1v-47a63.6 63.6 0 0 0 35 11.2v-20a44.3 44.3 0 0 1-18.6-5.2Z"/>
+                    </svg>
                   </a>
+
+                  {/* Instagram */}
                   <a
                     href="https://www.instagram.com/legalrecours"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-gray-900 transition-colors"
+                    aria-label="Instagram LegalRecours"
+                    className="hover:scale-110 transition-transform"
                   >
-                    Instagram
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" className="w-6 h-6">
+                      <defs>
+                        <linearGradient id="IG" x1="0%" y1="100%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#f58529"/>
+                          <stop offset="25%" stopColor="#feda77"/>
+                          <stop offset="50%" stopColor="#dd2a7b"/>
+                          <stop offset="75%" stopColor="#8134af"/>
+                          <stop offset="100%" stopColor="#515bd4"/>
+                        </linearGradient>
+                      </defs>
+                      <path fill="url(#IG)" d="M128 0c70.7 0 128 57.3 128 128S198.7 256 128 256 0 198.7 0 128 57.3 0 128 0Z"/>
+                      <path fill="#fff" d="M170 76H86c-5.5 0-10 4.5-10 10v84c0 5.5 4.5 10 10 10h84c5.5 0 10-4.5 10-10V86c0-5.5-4.5-10-10-10Zm-42 95c-20.2 0-36.5-16.3-36.5-36.5S107.8 98 128 98s36.5 16.3 36.5 36.5S148.2 171 128 171Zm38.2-65.4c-4.5 0-8.2-3.6-8.2-8.1 0-4.5 3.7-8.1 8.2-8.1s8.2 3.6 8.2 8.1c0 4.5-3.7 8.1-8.2 8.1Z"/>
+                      <circle fill="#fff" cx="128" cy="134.5" r="23.5"/>
+                    </svg>
                   </a>
                 </div>
               </div>
 
+              {/* BOTTOM */}
               <div className="mt-6 pt-6 border-t border-gray-200 text-center text-sm text-gray-600">
                 © 2025 LegalRecours.fr — Tous droits réservés | Expert en réclamations administratives
               </div>

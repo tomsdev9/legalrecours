@@ -160,39 +160,6 @@ const OrganismStep = () => {
           )
         })}
       </div>
-
-      {/* Why it works */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="max-w-4xl mx-auto"
-      >
-        <div className="glass-white border border-gray-200 rounded-xl p-6 shadow-lg">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">
-            ✅ Pourquoi nos courriers fonctionnent
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-            <div className="flex items-center justify-center gap-2">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-              <span className="text-secondary text-sm">Procédures officielles respectées</span>
-            </div>
-            <div className="flex items-center justify-center gap-2">
-              <TrendingUp className="w-5 h-5 text-gray-600" />
-              <span className="text-secondary text-sm">97% de taux de réussite</span>
-            </div>
-            <div className="flex items-center justify-center gap-2">
-              <Users className="w-5 h-5 text-gray-600" />
-              <span className="text-secondary text-sm">1000+ clients satisfaits</span>
-            </div>
-          </div>
-
-          <p className="mt-4 text-center text-xs text-muted">
-            Service privé, non affilié ni agréé par la CAF, la CPAM ou France Travail.
-          </p>
-        </div>
-      </motion.div>
     </div>
   )
 }

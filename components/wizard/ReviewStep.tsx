@@ -184,41 +184,6 @@ export default function ReviewStep() {
         </p>
       </div>
 
-      {/* --- Ce que contiendra votre document --- */}
-      <div className="glass-white rounded-2xl p-5 border border-primary">
-        <h3 className="text-primary font-medium mb-3">Votre document contiendra :</h3>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-primary">
-          <li className="flex items-start gap-2">
-            <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" />
-            Base légale et structure attendue (en-tête, objet, demandes)
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" />
-            Rappel des délais applicables et voie de recours
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" />
-            Liste des pièces justificatives à joindre
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" />
-            Coordonnées complètes de l’organisme destinataire
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" />
-            Mentions recommandées pour l’envoi en LRAR
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-green-primary" />
-            Formulation professionnelle et claire de vos demandes
-          </li>
-        </ul>
-
-        <div className="mt-3 text-xs text-muted">
-          <strong className="text-primary">Score contenu :</strong> 6 points clés couverts pour maximiser l’efficacité.
-        </div>
-      </div>
-
       {/* --- Checklist avant paiement --- */}
       <div className="glass-white rounded-2xl p-5 border border-primary">
         <h3 className="text-primary font-medium mb-3">🧭 Checklist avant paiement</h3>
@@ -236,28 +201,39 @@ export default function ReviewStep() {
 
       {/* CTA paiement */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div className="text-xs text-muted">
-          En cliquant sur « Payer et générer », votre PDF A4 sera généré automatiquement.
-        </div>
-        <div className="flex gap-3">
-          <Link href="/wizard" className="text-secondary hover:text-primary text-sm">
-            Modifier
-          </Link>
-          <Button onClick={handlePay} disabled={loading} className="h-10 px-4">
-            {loading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Redirection…
-              </>
-            ) : (
-              <>
-                <FileText className="mr-2 h-4 w-4" />
-                Payer et générer
-              </>
-            )}
-          </Button>
-        </div>
-      </div>
+  <div className="text-xs text-muted">
+    En cliquant sur « Payer et générer », votre PDF A4 sera généré automatiquement.
+  </div>
+  <div className="flex gap-3">
+    {/* Bouton Modifier */}
+    <Link
+      href="/wizard"
+      className="px-4 py-2 rounded-xl bg-[#2a2a2a] text-white text-sm hover:bg-[#3a3a3a] transition"
+    >
+      Modifier
+    </Link>
+
+    {/* Bouton Payer */}
+    <Button
+      onClick={handlePay}
+      disabled={loading}
+      className="h-10 px-5 rounded-xl bg-[#1C1C1C] text-white hover:bg-black transition"
+    >
+      {loading ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Redirection…
+        </>
+      ) : (
+        <>
+          <FileText className="mr-2 h-4 w-4" />
+          Payer et générer
+        </>
+      )}
+    </Button>
+  </div>
+</div>
+
     </div>
   )
 }

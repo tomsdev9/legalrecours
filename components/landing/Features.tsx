@@ -4,7 +4,6 @@ import { motion } from "framer-motion"
 import { Shield, Zap, Brain, Target, Scale } from "lucide-react"
 
 const Features = () => {
-
   const mainFeatures: { icon: React.ComponentType<{ className?: string }>; title: string; description: React.ReactNode }[] = [
     {
       icon: Brain,
@@ -44,8 +43,6 @@ const Features = () => {
     },
   ]
 
-
-
   return (
     <section className="py-8 sm:py-12 lg:py-16 relative overflow-hidden px-4">
       {/* Background - adapté fond blanc */}
@@ -74,10 +71,10 @@ const Features = () => {
           className="text-center mb-8 sm:mb-12"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-900">
-            Pourquoi choisir <span className="gradient-text">LegalRecours</span> ?
+            C’est quoi <span className="gradient-text">LegalRecours</span> ?
           </h2>
           <p className="text-lg sm:text-xl text-secondary max-w-3xl mx-auto px-4">
-            La différence entre un courrier qui aboutit et un courrier qui s&apos;égare.
+            Un assistant qui génère des courriers juridiques <span className="text-green-primary font-medium">conformes</span> pour la CAF, la CPAM et France Travail — en <span className="text-green-primary font-medium">2 minutes</span>.
           </p>
         </motion.div>
 
@@ -94,7 +91,7 @@ const Features = () => {
                 viewport={{ once: true }}
                 className="glass-white rounded-2xl p-6 sm:p-8 hover:shadow-lg transition-all duration-300 group border border-gray-100"
               >
-                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-r from-gray-700 to-gray-900 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-md`}>
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-r from-gray-700 to-gray-900 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-md">
                   <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
                 <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900">{feature.title}</h3>
@@ -103,8 +100,6 @@ const Features = () => {
             )
           })}
         </div>
-
-
 
         {/* Bandeau preuve "sobre" */}
         <div className="mt-8 sm:mt-10 flex items-center justify-center gap-3 text-xs sm:text-sm text-muted">
