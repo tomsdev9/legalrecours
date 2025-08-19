@@ -14,11 +14,13 @@ export async function GET(req: Request, context: unknown) {
     })
   }
 
-  // ✅ Conversion en Buffer pour TypeScript
-  const buffer = Buffer.from(buf)
+  // 1) Normalise en Uint8Array
+  const u8 = buf instanceof Uint8Array ? new Uint8Array(buf) : new Uint8Array(buf as ArrayBufferLike)
 
-  // ✅ Response accepte Buffer
-  return new Response(buffer, {
+  // 2) Construit un Blob pour que BodyInit soit accepté partout
+  const blob = new Blob([u8], { type: "application/pdf" })
+
+  return new Response(blob, {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="courrier-${params.id}.pdf"`,
