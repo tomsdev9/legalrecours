@@ -172,7 +172,8 @@ export async function POST(req: NextRequest) {
       metaLines,
     })
 
-    return new NextResponse(pdfBuffer, {
+    // ✅ Fix TypeScript : conversion en Buffer
+    return new NextResponse(pdfBuffer as BodyInit, {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="courrier-${body.caseId.toLowerCase()}.pdf"`,
