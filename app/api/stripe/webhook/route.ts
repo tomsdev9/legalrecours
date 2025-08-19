@@ -1,30 +1,42 @@
-// /app/api/stripe/webhook/route.ts
-import { NextRequest, NextResponse } from "next/server"
-import Stripe from "stripe"
+// app/api/stripe/webhook/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import Stripe from "stripe";
 
-export const runtime = "nodejs"
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
-  const secret = process.env.STRIPE_SECRET_KEY
-  const whSecret = process.env.STRIPE_WEBHOOK_SECRET
-  if (!secret || !whSecret) return NextResponse.json({ ok: true })
+  const secret = process.env.STRIPE_SECRET_KEY;
+  const whSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-  const stripe = new Stripe(secret, { apiVersion: "2025-07-30.basil" })
-  const sig = req.headers.get("stripe-signature")
-  const raw = await req.text()
+  if (!secret || !whSecret) {
+    // Mieux de signaler la mauvaise config pour le déploiement
+    return new NextResponse("Stripe env vars missing", { status: 500 });
+  }
 
-  let event: Stripe.Event
+  // Ne pas fixer apiVersion ici (utilise celle du Dashboard)
+  const stripe = new Stripe(secret);
+  const sig = req.headers.get("stripe-signature");
+  const raw = await req.text();
+
+  let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(raw, sig ?? "", whSecret)
+    event = stripe.webhooks.constructEvent(raw, sig ?? "", whSecret);
   } catch (e) {
-    console.error("Webhook signature error", e)
-    return new NextResponse("Bad signature", { status: 400 })
+    console.error("Webhook signature error", e);
+    return new NextResponse("Bad signature", { status: 400 });
   }
 
-  if (event.type === "checkout.session.completed") {
-    // TODO: déverrouiller le download si tu stockes un état
-    // Pour MVP: rien, la page /checkout/success fera l’appel /api/generate-letter
+  // Gère les événements utiles (tu peux en ajouter d’autres si besoin)
+  switch (event.type) {
+    case "checkout.session.completed":
+    case "checkout.session.async_payment_succeeded":
+      // 👉 Ici tu pourrais marquer la commande comme payée en base
+      // Pour le MVP, rien : ta /checkout/success génère déjà le PDF côté client
+      break;
+    default:
+      // noop
+      break;
   }
 
-  return NextResponse.json({ received: true })
+  return NextResponse.json({ received: true });
 }
