@@ -4,14 +4,15 @@ import { getPdf } from "@/lib/storage"
 
 export const runtime = "nodejs"
 
-export async function GET(
-  req: Request,
-  { params }: any            // 👈 laisse en `any` pour éviter l'erreur Next
-) {
+export async function GET(req: Request, ctx: unknown) {
+  // On caste localement pour éviter `any` et satisfaire Next
+  const { params } = ctx as { params: { id: string } }
   const buf = await getPdf(params.id)
+
   if (!buf) {
     return NextResponse.json({ error: "Not found" }, { status: 404 })
   }
+
   return new NextResponse(buf, {
     headers: {
       "Content-Type": "application/pdf",
