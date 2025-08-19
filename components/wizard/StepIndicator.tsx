@@ -8,7 +8,7 @@ const StepIndicator: React.FC = () => {
   const { state } = useWizard()
 
   return (
-    <div className="glass rounded-2xl px-3 py-4 border border-white/10 overflow-x-auto">
+    <div className="glass-white border border-gray-200 rounded-xl px-3 py-4 overflow-x-auto shadow-sm">
       <ol className="flex items-center gap-4 min-w-max">
         {WIZARD_STEPS.map((step, idx) => {
           const active = state.currentStep === step.id
@@ -22,8 +22,8 @@ const StepIndicator: React.FC = () => {
                   done
                     ? "bg-green-500 text-white"
                     : active
-                    ? "bg-blue-500 text-white"
-                    : "bg-white/10 text-gray-300",
+                    ? "bg-gray-900 text-white"
+                    : "bg-gray-100 text-gray-500 border border-gray-200",
                 ].join(" ")}
               >
                 {step.id}
@@ -33,18 +33,18 @@ const StepIndicator: React.FC = () => {
                 <p
                   className={[
                     "text-xs sm:text-sm whitespace-nowrap",
-                    active ? "text-white font-semibold" : "text-gray-300",
+                    active ? "text-gray-900 font-semibold" : "text-secondary",
                   ].join(" ")}
                 >
                   {step.title}
                 </p>
-                <p className="hidden md:block text-xs text-gray-400 max-w-[260px] truncate">
+                <p className="hidden md:block text-xs text-muted max-w-[260px] truncate">
                   {step.description}
                 </p>
               </div>
 
               {idx < WIZARD_STEPS.length - 1 && (
-                <div className="h-px w-10 sm:w-16 md:w-20 bg-white/10" />
+                <div className="h-px w-10 sm:w-16 md:w-20 bg-gray-200" />
               )}
             </li>
           )

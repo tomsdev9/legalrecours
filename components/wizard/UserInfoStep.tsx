@@ -48,11 +48,11 @@ const UserInfoStep = () => {
       case "POLE_EMPLOI":
         return {
           key: "poleEmploiNumber" as const,
-          label: "Identifiant Pôle Emploi",
+          label: "Identifiant France Travail",
           placeholder: "ex : 1234567A",
           icon: Briefcase,
           helpText:
-            "Identifiant alphanumérique figurant sur vos documents Pôle Emploi.",
+            "Identifiant alphanumérique figurant sur vos documents France Travail.",
           type: "alnum" as const,
           pattern: /^[A-Za-z0-9]{7,12}$/,
           maxLength: 12,
@@ -66,7 +66,7 @@ const UserInfoStep = () => {
   if (!state.selectedOrganism) {
     return (
       <div className="text-center">
-        <p className="text-gray-400">
+        <p className="text-secondary">
           Veuillez d&apos;abord sélectionner un organisme
         </p>
       </div>
@@ -177,11 +177,11 @@ const UserInfoStep = () => {
         transition={{ duration: 0.6 }}
         className="text-center"
       >
-        <div className="inline-flex items-center gap-3 glass rounded-full px-6 py-3 mb-6">
-          <User className="w-5 h-5 text-blue-400" />
-          <span className="text-white font-medium">Vos informations</span>
+        <div className="inline-flex items-center gap-3 glass-white rounded-full px-6 py-3 mb-6 border border-primary">
+          <User className="w-5 h-5 text-green-primary" />
+          <span className="text-primary font-medium">Vos informations</span>
         </div>
-        <p className="text-gray-300 text-lg leading-relaxed max-w-2xl mx-auto">
+        <p className="text-secondary text-lg leading-relaxed max-w-2xl mx-auto">
           Renseignez vos coordonnées pour personnaliser votre courrier officiel.
           Ces informations apparaîtront sur votre document.
         </p>
@@ -197,8 +197,8 @@ const UserInfoStep = () => {
             transition={{ duration: 0.6, delay: sIdx * 0.2 }}
             className="space-y-6"
           >
-            <h3 className="text-xl font-semibold text-white flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+            <h3 className="text-xl font-semibold text-primary flex items-center gap-3">
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold text-sm">
                 {sIdx + 1}
               </div>
               {section.section}
@@ -221,19 +221,19 @@ const UserInfoStep = () => {
                   >
                     <div className="space-y-3">
                       <div className="flex items-center gap-3">
-                        <Icon className="w-5 h-5 text-blue-400" />
-                        <label className="text-white font-medium">
+                        <Icon className="w-5 h-5 text-green-primary" />
+                        <label className="text-primary font-medium">
                           {field.label}
                           {field.required && (
-                            <span className="text-red-400 ml-1">*</span>
+                            <span className="text-red-500 ml-1">*</span>
                           )}
                         </label>
                         {field.helpText && (
                           <div className="group relative">
-                            <AlertCircle className="w-4 h-4 text-gray-400 cursor-help" />
-                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10 border border-white/10 max-w-60 text-center">
+                            <AlertCircle className="w-4 h-4 text-secondary cursor-help" />
+                            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 glass-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10 border border-primary max-w-60 text-center text-primary">
                               {field.helpText}
-                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800" />
+                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-white" />
                             </div>
                           </div>
                         )}
@@ -245,10 +245,10 @@ const UserInfoStep = () => {
                           value={value}
                           onChange={(e) => updateUserInfo(field.key, e.target.value)}
                           placeholder={field.placeholder}
-                          className={`w-full p-4 bg-white/5 border rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all duration-300 backdrop-blur-sm ${
+                          className={`w-full p-4 bg-white border rounded-xl text-primary placeholder-gray-500 focus:ring-2 focus:ring-[#34D28D33] focus:outline-none transition-all duration-300 ${
                             showError
-                              ? "border-red-500/50 focus:border-red-500/50"
-                              : "border-white/20 focus:border-blue-500/50"
+                              ? "border-red-400 focus:border-red-400"
+                              : "border-primary focus:border-green-primary"
                           }`}
                         />
 
@@ -256,7 +256,7 @@ const UserInfoStep = () => {
                           <motion.div
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="flex items-center gap-2 mt-2 text-red-400 text-sm"
+                            className="flex items-center gap-2 mt-2 text-red-600 text-sm"
                           >
                             <AlertCircle className="w-4 h-4" />
                             <span>{error}</span>
@@ -279,8 +279,8 @@ const UserInfoStep = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="space-y-6"
           >
-            <h3 className="text-xl font-semibold text-white flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+            <h3 className="text-xl font-semibold text-primary flex items-center gap-3">
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold text-sm">
                 3
               </div>
               Information {organismData.shortName}
@@ -288,16 +288,16 @@ const UserInfoStep = () => {
 
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <organismField.icon className="w-5 h-5 text-blue-400" />
-                <label className="text-white font-medium">
+                <organismField.icon className="w-5 h-5 text-green-primary" />
+                <label className="text-primary font-medium">
                   {organismField.label}
-                  <span className="text-red-400 ml-1">*</span>
+                  <span className="text-red-500 ml-1">*</span>
                 </label>
                 <div className="group relative">
-                  <AlertCircle className="w-4 h-4 text-gray-400 cursor-help" />
-                  <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10 border border-white/10">
+                  <AlertCircle className="w-4 h-4 text-secondary cursor-help" />
+                  <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 glass-white text-xs rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10 border border-primary text-primary">
                     {organismField.helpText}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800" />
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-white" />
                   </div>
                 </div>
               </div>
@@ -319,7 +319,7 @@ const UserInfoStep = () => {
                     updateUserInfo(organismField.key, cleaned)
                   }}
                   placeholder={organismField.placeholder}
-                  className="w-full p-4 bg-white/5 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all duration-300 backdrop-blur-sm"
+                  className="w-full p-4 bg-white border border-primary rounded-xl text-primary placeholder-gray-500 focus:border-green-primary focus:ring-2 focus:ring-[#34D28D33] focus:outline-none transition-all duration-300"
                 />
 
                 {/* Minimal feedback si pattern non respecté */}
@@ -327,7 +327,7 @@ const UserInfoStep = () => {
                   const v = String(userInfo[organismField.key] || "")
                   if (!v) return null
                   if (!organismField.pattern?.test(v)) {
-                    return <p className="mt-2 text-sm text-red-400">Format invalide.</p>
+                    return <p className="mt-2 text-sm text-red-600">Format invalide.</p>
                   }
                   return null
                 })()}
@@ -344,20 +344,20 @@ const UserInfoStep = () => {
         transition={{ duration: 0.6, delay: 0.6 }}
         className="max-w-3xl mx-auto"
       >
-        <div className="glass rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4 text-center">
+        <div className="glass-white rounded-2xl p-6 border border-primary">
+          <h3 className="text-lg font-semibold text-primary mb-4 text-center">
             🔒 Confidentialité et sécurité
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div>
-              <h4 className="text-green-400 font-medium mb-2">Données sécurisées</h4>
-              <p className="text-gray-300 leading-relaxed">
+              <h4 className="text-green-primary font-medium mb-2">Données sécurisées</h4>
+              <p className="text-secondary leading-relaxed">
                 Vos informations sont utilisées uniquement pour générer votre courrier.
               </p>
             </div>
             <div>
-              <h4 className="text-blue-400 font-medium mb-2">Non-stockage</h4>
-              <p className="text-gray-300 leading-relaxed">
+              <h4 className="text-green-primary font-medium mb-2">Non-stockage</h4>
+              <p className="text-secondary leading-relaxed">
                 Aucune donnée personnelle n&apos;est conservée après génération.
               </p>
             </div>
@@ -372,20 +372,20 @@ const UserInfoStep = () => {
         transition={{ duration: 0.5, delay: 0.8 }}
         className="max-w-2xl mx-auto"
       >
-        <div className="glass rounded-xl p-6 border border-blue-500/30">
-          <h4 className="text-white font-semibold mb-3">Récapitulatif :</h4>
+        <div className="glass-white rounded-xl p-6 border border-green-primary/50">
+          <h4 className="text-primary font-semibold mb-3">Récapitulatif :</h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
             <div>
-              <span className="text-gray-400">Organisme :</span>
-              <p className="text-white font-medium">{organismData.shortName}</p>
+              <span className="text-muted">Organisme :</span>
+              <p className="text-primary font-medium">{organismData.shortName}</p>
             </div>
             <div>
-              <span className="text-gray-400">Problème :</span>
-              <p className="text-white font-medium">{state.caseData?.title}</p>
+              <span className="text-muted">Problème :</span>
+              <p className="text-primary font-medium">{state.caseData?.title}</p>
             </div>
             <div>
-              <span className="text-gray-400">Prochaine étape :</span>
-              <p className="text-green-400 font-medium">Validation & Paiement</p>
+              <span className="text-muted">Prochaine étape :</span>
+              <p className="text-green-primary font-medium">Validation & Paiement</p>
             </div>
           </div>
         </div>

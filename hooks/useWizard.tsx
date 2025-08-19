@@ -250,7 +250,7 @@ function useWizardImpl() {
         if (state.selectedOrganism === "POLE_EMPLOI") {
           const v = state.userInfo.poleEmploiNumber?.trim() || ""
           if (!v) {
-            errors.poleEmploiNumber = "Identifiant Pôle Emploi requis"
+            errors.poleEmploiNumber = "Identifiant France Travail requis"
           } else if (!/^[A-Za-z0-9]{7,12}$/.test(v)) {
             errors.poleEmploiNumber =
               "Format invalide (7 à 12 caractères alphanumériques)"
@@ -374,7 +374,7 @@ type WizardCtx = ReturnType<typeof useWizardImpl> | null
 const WizardContext = createContext<WizardCtx>(null)
 WizardContext.displayName = "WizardContext"
 
-type WizardProviderProps = React.PropsWithChildren<Record<string, never>>
+type WizardProviderProps = React.PropsWithChildren<{}>
 
 export function WizardProvider({ children }: WizardProviderProps) {
   const value = useWizardImpl()

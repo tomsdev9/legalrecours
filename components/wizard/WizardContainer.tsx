@@ -50,20 +50,20 @@ const Inner = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Background blobs */}
+    <div className="min-h-screen bg-white">
+      {/* Background blobs - adapté fond blanc */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.05, scale: 1 }}
+          animate={{ opacity: 0.02, scale: 1 }}
           transition={{ duration: 2 }}
-          className="absolute top-20 left-20 w-96 h-96 bg-blue-500 rounded-full blur-3xl"
+          className="absolute top-20 left-20 w-96 h-96 bg-gray-200 rounded-full blur-3xl"
         />
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.05, scale: 1 }}
+          animate={{ opacity: 0.02, scale: 1 }}
           transition={{ duration: 2, delay: 0.5 }}
-          className="absolute bottom-20 right-20 w-80 h-80 bg-purple-500 rounded-full blur-3xl"
+          className="absolute bottom-20 right-20 w-80 h-80 bg-gray-300 rounded-full blur-3xl"
         />
       </div>
 
@@ -77,12 +77,12 @@ const Inner = () => {
               transition={{ duration: 0.6 }}
               className="flex items-center gap-3"
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-900 rounded-xl flex items-center justify-center">
                 <span className="text-white font-bold text-lg">LR</span>
               </div>
               <div>
-                <h1 className="text-white font-bold text-xl">LegalRecours</h1>
-                <p className="text-gray-400 text-sm">Assistant juridique IA</p>
+                <h1 className="text-gray-900 font-bold text-xl">LegalRecours</h1>
+                <p className="text-muted text-sm">Assistant juridique IA</p>
               </div>
             </motion.div>
 
@@ -92,10 +92,10 @@ const Inner = () => {
               transition={{ duration: 0.6 }}
               className="text-right"
             >
-              <p className="text-white font-semibold">
+              <p className="text-gray-900 font-semibold">
                 Étape {state.currentStep} sur {5}
               </p>
-              <p className="text-gray-400 text-sm">{currentStepData?.title}</p>
+              <p className="text-muted text-sm">{currentStepData?.title}</p>
             </motion.div>
           </div>
         </header>
@@ -116,15 +116,15 @@ const Inner = () => {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -20, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
-                  className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3"
+                  className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3"
                 >
-                  <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-                  <p className="text-red-200 text-sm font-medium">
+                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
+                  <p className="text-red-700 text-sm font-medium">
                     {state.error}
                   </p>
                   <button
                     onClick={clearError}
-                    className="ml-auto text-red-400 hover:text-red-300 transition-colors"
+                    className="ml-auto text-red-600 hover:text-red-700 transition-colors"
                   >
                     ×
                   </button>
@@ -133,7 +133,7 @@ const Inner = () => {
             </AnimatePresence>
 
             {/* Step wrapper */}
-            <div className="glass rounded-3xl p-6 sm:p-8 lg:p-12 mb-8">
+            <div className="glass-white border border-gray-200 rounded-xl p-6 sm:p-8 lg:p-12 mb-8 shadow-lg">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={state.currentStep}
@@ -147,7 +147,7 @@ const Inner = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.1 }}
-                      className="text-3xl md:text-4xl font-bold text-white mb-4"
+                      className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
                     >
                       {currentStepData?.title}
                     </motion.h2>
@@ -155,7 +155,7 @@ const Inner = () => {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.2 }}
-                      className="text-gray-300 text-lg max-w-2xl mx-auto"
+                      className="text-secondary text-lg max-w-2xl mx-auto"
                     >
                       {currentStepData?.description}
                     </motion.p>
@@ -187,7 +187,7 @@ const Inner = () => {
                     size="lg"
                     onClick={handlePrevious}
                     disabled={state.isLoading}
-                    className="group"
+                    className="group border-gray-300 text-gray-700 hover:bg-gray-50"
                   >
                     <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
                     Précédent
@@ -197,7 +197,7 @@ const Inner = () => {
 
               {/* Step counter */}
               <div className="text-center">
-                <p className="text-gray-400 text-sm">
+                <p className="text-muted text-sm">
                   {state.currentStep} / {5}
                 </p>
               </div>
@@ -210,7 +210,7 @@ const Inner = () => {
                     onClick={handleNext}
                     disabled={state.isLoading || !navigation.canGoNext}
                     aria-disabled={state.isLoading || !navigation.canGoNext}
-                    className="group inline-flex items-center whitespace-nowrap"
+                    className="group inline-flex items-center whitespace-nowrap bg-[#222223] hover:bg-black text-white"
                   >
                     {state.isLoading ? (
                       <>
@@ -226,7 +226,7 @@ const Inner = () => {
                   </Button>
                 ) : (
                   <div className="text-center">
-                    <p className="text-gray-400 text-sm">
+                    <p className="text-muted text-sm">
                       Dernière étape - Validez votre commande
                     </p>
                   </div>
@@ -237,9 +237,9 @@ const Inner = () => {
         </main>
 
         {/* Footer */}
-        <footer className="container-custom py-8 border-t border-white/10">
+        <footer className="container-custom py-8 border-t border-gray-200">
           <div className="text-center">
-            <p className="text-gray-400 text-sm">
+            <p className="text-muted text-sm">
               🔒 Vos données sont sécurisées et ne sont pas stockées après génération
             </p>
           </div>

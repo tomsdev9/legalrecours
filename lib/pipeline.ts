@@ -93,7 +93,7 @@ export async function finalizeWithAI(
   draft: string,
   meta: { organism: Organism; caseId: CaseId | string }
 ) {
-  const revised = await reviseLetterWithAI(draft, { organism: meta.organism, caseId: String(meta.caseId) })
+  const revised = await reviseLetterWithAI(draft, { organism: meta.organism, caseId: meta.caseId as CaseId })
   const cleaned = stripProtectionBrackets(revised)
   return cleanupText(cleaned)
 }

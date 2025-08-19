@@ -26,7 +26,7 @@ import {
 // Type de composant Lucide (icône)
 type IconComp = React.ComponentType<React.ComponentProps<"svg">>
 
-// Icônes par CASE (optionnel, on met un fallback après)
+// Icônes par CASE (optionnel, fallback plus bas)
 const iconByCase: Partial<Record<CaseId, IconComp>> = {
   // CAF
   CAF_TROP_PERCU: Wallet,
@@ -40,7 +40,7 @@ const iconByCase: Partial<Record<CaseId, IconComp>> = {
   CPAM_REFUS_ARRET_TRAVAIL: Ban,
   CPAM_FEUILLE_SOINS: Receipt,
 
-  // Pôle Emploi
+  // France Travail
   POLE_EMPLOI_RADIATION: Ban,
   POLE_EMPLOI_OBSERVATIONS: ClipboardList,
   POLE_EMPLOI_TROP_PERCU: Wallet,
@@ -70,7 +70,7 @@ const CaseStep: React.FC = () => {
 
   if (!organism) {
     return (
-      <div className="text-center text-gray-300">
+      <div className="text-center text-gray-500">
         Veuillez d’abord sélectionner un organisme à l’étape précédente.
       </div>
     )
@@ -78,7 +78,7 @@ const CaseStep: React.FC = () => {
 
   if (!cases || cases.length === 0) {
     return (
-      <div className="text-center text-gray-300">
+      <div className="text-center text-gray-500">
         Aucun cas disponible pour cet organisme pour le moment.
       </div>
     )
@@ -103,43 +103,51 @@ const CaseStep: React.FC = () => {
             transition={{ duration: 0.35, delay: 0.05 * idx }}
             onClick={() => selectCase(c.id)}
             className={[
-              "text-left rounded-2xl p-5 border-2 transition-all duration-300 group",
-              "focus:outline-none focus:ring-2 focus:ring-blue-500/40",
+              // base card (DA blanc/noir/vert)
+              "text-left rounded-xl p-5 border transition-all duration-300 group glass",
+              // focus ring vert foncé
+              "focus:outline-none focus:ring-2 focus:ring-green-primary/40",
+              // state
               isSelected
-                ? "border-blue-500/50 bg-blue-500/10 shadow-lg shadow-blue-500/20"
-                : "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10",
+                ? "border-green-primary bg-green-primary/5 shadow-glow"
+                : "border-gray-200 bg-white hover:bg-gray-50",
             ].join(" ")}
           >
             <div className="flex items-center gap-4 mb-3">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                <Icon className="w-7 h-7 text-white" />
+              <div
+                className={[
+                  "w-12 h-12 rounded-lg flex items-center justify-center shrink-0 transition-colors",
+                  isSelected ? "bg-green-primary text-white" : "bg-primary text-white/95",
+                ].join(" ")}
+              >
+                <Icon className="w-6 h-6" />
               </div>
               <div className="min-w-0">
                 <p
                   className={[
-                    "font-semibold",
-                    isSelected ? "text-white" : "text-gray-100",
+                    "font-semibold line-clamp-2",
+                    "text-primary",
                   ].join(" ")}
                 >
                   {c.title}
                 </p>
-                <p className="text-xs text-gray-400 line-clamp-2">
+                <p className="text-sm text-muted line-clamp-2">
                   {c.description}
                 </p>
               </div>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-muted">
                 Cliquez pour sélectionner
               </span>
               {isSelected ? (
-                <span className="inline-flex items-center gap-1 text-xs text-green-400 font-medium">
+                <span className="inline-flex items-center gap-1 text-xs text-green-primary font-medium">
                   <CheckCircle className="w-4 h-4" />
                   Sélectionné
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 text-xs text-gray-400">
+                <span className="inline-flex items-center gap-1 text-xs text-muted">
                   <HelpCircle className="w-4 h-4" />
                   Plus d’infos dans l’étape suivante
                 </span>

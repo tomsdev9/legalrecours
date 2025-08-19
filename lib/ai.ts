@@ -2,7 +2,6 @@
 import type { OrganismKey, CaseId } from "@/lib/wizard-data"
 
 /* ─────────────────────── Types ─────────────────────── */
-
 export type ReviseMeta = {
   organism: OrganismKey
   caseId: CaseId
@@ -19,27 +18,24 @@ const RX_SUBJECT_LINE = /^\s*(\*\*|__|#+|\*)?\s*objet\s*[:\-–]\s*.*$/gim
 const RX_MARKDOWN_BOLD = /\*\*(.*?)\*\*/g
 const RX_MARKDOWN_UNDER = /__(.*?)__/g
 const RX_MARKDOWN_HEADERS = /^#{1,6}\s*/gm
-// Puces (inclut -, •, *, chiffres “1. ” / “1) ”)
-const RX_BULLET = /^\s*(?:[-\u2022\*]|\d+\)|\d+\.)\s+/gm
+const RX_BULLET = /^\s*(?:[-•*]\s+|\d+\)\s+|\d+\.\s+)/gm
 
 // Ligne “titre” probable : courte, sans ponctuation finale, tout en MAJ ou “Title Case”
 const RX_PROBABLE_HEADER =
   /^\s*(\*\*|__|#+|\*)?\s*[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸ0-9][A-Za-zÀ-ÖØ-öø-ÿ0-9’' \-]{1,60}[:]?(\*\*|__)?\s*$/u
 
-/** Normalise les montants “1200€” -> “1 200 €”, corrige “1/200 €” -> “1 200 €”. */
-function normalizeEuroSpaces(s: string): string {
-  // Corrige “1/200 €” (slash) en espace fine insécable
-  s = s.replace(/(\d)\/(\d{3})(\s*€)/g, "$1\u202F$2$3")
-  // “1200€” / “1200 €” -> “1 200 €”
-  s = s.replace(/(\d{1,3})(\d{3})(\s*€)/g, "$1\u202F$2$3")
-  // “euros” -> “€” (simple, sans sur-correction)
-  s = s.replace(/\beuros?\b/gi, "€")
-  // espaces multiples avant € -> fine NBSP
-  s = s.replace(/\s*€/g, "\u202F€")
-  return s
+/** Normalise les montants/€ (supprime “/€” et espace correct avant €) */
+function normalizeEuroAndThousands(t: string): string {
+  // 123/€ -> 123 €
+  t = t.replace(/(\d+)\s*\/\s*€/g, "$1 €")
+  // 1/200 € -> 1 200 €
+  t = t.replace(/(\d)\/(\d{3})(?=\s*€)/g, "$1 $2")
+  // espaces corrects avant €
+  t = t.replace(/(\d)\s*€/g, "$1 €")
+  return t
 }
 
-/** Nettoie le texte IA : enlève titres/markdown/puces, “Objet : …”, normalise €, ajoute l’appel si absent. */
+/** Nettoie le texte IA : enlève titres/markdown et “Objet : …” éventuel. */
 export function sanitizeLetterBody(raw: string): string {
   let t = (raw ?? "").replace(/\r\n/g, "\n")
 
@@ -67,27 +63,26 @@ export function sanitizeLetterBody(raw: string): string {
   }
   t = kept.join("\n")
 
-  // 4) Enlève une politesse finale éventuelle (gérée par le PDF)
+  // 4) Enlève une politesse finale éventuelle (ajoutée par l’IA)
   t = t.replace(
     /(je vous prie d[’']agréer[^.\n]*\.\s*$|veuillez agréer[^.\n]*\.\s*$|cordialement\.?\s*$|bien cordialement\.?\s*$|sinc(è|e)res?\s+salutations\.?\s*$)/gim,
     ""
   )
 
-  // 5) Normalise les montants en € (évite “1/200 €”)
-  t = normalizeEuroSpaces(t)
-
-  // 6) Compacte proprement
+  // 5) Compacte proprement
   t = t.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim()
 
-  // 7) Préfixe d’appel si manquant
-  if (t && !/^(madame|monsieur)/i.test(t)) {
+  // 6) Préfixe d’appel si manquant
+  if (!/^(madame|monsieur)/i.test(t)) {
     t = `Madame, Monsieur,\n\n${t}`
   }
+
+  // 7) Normalisation montants/€
+  t = normalizeEuroAndThousands(t)
   return t
 }
 
 /* ───────── Consignes IA ───────── */
-
 const BASE_POLICY = [
   "Tu es juriste en droit administratif français.",
   "Tu améliores un courrier déjà rédigé : ton formel, clair, non agressif.",
@@ -151,7 +146,7 @@ const CASE_POLICIES: Record<CaseId, readonly string[]> = {
     "Demande traitement/régularisation et, le cas échéant, remboursement.",
   ] as const,
 
-  // Pôle Emploi / France Travail
+  // Pôle Emploi
   POLE_EMPLOI_RADIATION: [
     "Conteste la radiation, explique la situation réelle (empêchement, justificatif…).",
     "Demande annulation de la décision et rétablissement des droits.",
@@ -175,7 +170,6 @@ const CASE_POLICIES: Record<CaseId, readonly string[]> = {
 }
 
 /* ───────── Helpers ───────── */
-
 function buildSystem(meta: ReviseMeta): string {
   const org = ORGANISM_POLICIES[meta.organism] ?? []
   const cas = CASE_POLICIES[meta.caseId] ?? []
@@ -192,12 +186,11 @@ function protectDraft(draft: string): string {
     .replace(/(\b\d{4}-\d{2}-\d{2}\b)/g, "[[$1]]")
     // montants en euros
     .replace(/(\b\d[\d\s]*[.,]?\d*\s?€\b)/g, "[[$1]]")
-    // numéros / références (N°, No, Numéro, Réf.)
+    // numéros / références (N°|No|Numéro|Réf.)
     .replace(/(\b(?:N°|No|Numéro|Réf\.?)\s?[A-Za-z0-9\-_/]+)\b/g, "[[$1]]")
 }
 
 /* ───────── Appel API ───────── */
-
 export async function reviseLetterWithAI(draft: string, meta: ReviseMeta): Promise<string> {
   const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey) return sanitizeLetterBody(draft)
@@ -224,7 +217,7 @@ export async function reviseLetterWithAI(draft: string, meta: ReviseMeta): Promi
     "anthropic-version": "2023-06-01",
   }
 
-  const payload = {
+  const body = {
     model: "claude-sonnet-4-20250514",
     max_tokens: 900,
     system,
@@ -236,7 +229,7 @@ export async function reviseLetterWithAI(draft: string, meta: ReviseMeta): Promi
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers,
-      body: JSON.stringify(payload),
+      body: JSON.stringify(body),
     })
 
     if (!res.ok) {
@@ -246,9 +239,7 @@ export async function reviseLetterWithAI(draft: string, meta: ReviseMeta): Promi
     }
 
     const json = (await res.json()) as AnthropicMessageResponse
-    const block = json?.content?.find(
-      c => c?.type === "text" && typeof c.text === "string"
-    )
+    const block = json?.content?.find(c => c?.type === "text" && typeof c.text === "string")
     textOut = block?.text ?? draft
   } catch (err) {
     // eslint-disable-next-line no-console

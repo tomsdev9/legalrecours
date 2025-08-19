@@ -11,18 +11,64 @@ import {
 } from "@react-pdf/renderer"
 
 const styles = StyleSheet.create({
-  page: { paddingTop: 56, paddingHorizontal: 56, paddingBottom: 72, fontSize: 11, fontFamily: "Times-Roman" },
-  row: { display: "flex", flexDirection: "row" },
-  right: { marginLeft: "auto" },
-  spacer: { height: 10 },
-  headerBlock: { marginBottom: 14, lineHeight: 1.3 },
-  destBlock: { marginTop: 18, marginBottom: 18, lineHeight: 1.3 },
-  subject: { marginTop: 10, marginBottom: 8, fontSize: 12, fontStyle: "italic" },
-  meta: { fontSize: 10, color: "#333", marginBottom: 10, lineHeight: 1.35 },
-  body: { lineHeight: 1.5, textAlign: "justify" },
-  paragraph: { marginBottom: 8 },
-  signature: { marginTop: 18, lineHeight: 1.6 },
-  footer: { position: "absolute", fontSize: 9, left: 56, right: 56, bottom: 32, textAlign: "center", color: "#666" }
+  page: { 
+    paddingTop: 56, 
+    paddingHorizontal: 56, 
+    paddingBottom: 72, 
+    fontSize: 11, 
+    fontFamily: "Times-Roman" 
+  },
+  row: { 
+    display: "flex", 
+    flexDirection: "row" 
+  },
+  right: { 
+    marginLeft: "auto" 
+  },
+  spacer: { 
+    height: 10 
+  },
+  headerBlock: { 
+    marginBottom: 14, 
+    lineHeight: 1.3 
+  },
+  destBlock: { 
+    marginTop: 18, 
+    marginBottom: 18, 
+    lineHeight: 1.3 
+  },
+  subject: { 
+    marginTop: 10, 
+    marginBottom: 8, 
+    fontSize: 12, 
+    fontStyle: "italic" 
+  },
+  meta: { 
+    fontSize: 10, 
+    color: "#333", 
+    marginBottom: 10, 
+    lineHeight: 1.35 
+  },
+  body: { 
+    lineHeight: 1.5, 
+    textAlign: "justify" 
+  },
+  paragraph: { 
+    marginBottom: 8 
+  },
+  signature: { 
+    marginTop: 18, 
+    lineHeight: 1.6 
+  },
+  footer: { 
+    position: "absolute", 
+    fontSize: 9, 
+    left: 56, 
+    right: 56, 
+    bottom: 32, 
+    textAlign: "center", 
+    color: "#666" 
+  }
 })
 
 function splitParagraphs(text: string) {
@@ -34,15 +80,17 @@ type LetterPageProps = {
   dest: { lines: string[] }
   cityDate: string
   subject: string
-  metaLines?: string[] // ← nouvelles petites lignes “Références : …”
+  metaLines?: string[]
   body: string
   signName: string
 }
 
 function LetterPage(props: LetterPageProps): ReactElement {
   const paras = splitParagraphs(props.body)
+  
   return (
     <Page size="A4" style={styles.page}>
+      {/* En-tête expéditeur */}
       <View style={styles.headerBlock}>
         <Text>{props.sender.name}</Text>
         <Text>{props.sender.address}</Text>
@@ -54,28 +102,42 @@ function LetterPage(props: LetterPageProps): ReactElement {
         </View>
       </View>
 
+      {/* Destinataire */}
       <View style={styles.destBlock}>
-        {props.dest.lines.map((l, i) => <Text key={i}>{l}</Text>)}
+        {props.dest.lines.map((line, index) => (
+          <Text key={index}>{line}</Text>
+        ))}
       </View>
 
+      {/* Objet */}
       <Text style={styles.subject}>Objet : {props.subject}</Text>
 
-      {!!props.metaLines?.length && (
+      {/* Méta-informations (référence, montant, date, n° dossier) */}
+      {props.metaLines && props.metaLines.length > 0 && (
         <Text style={styles.meta}>
           {props.metaLines.join(" · ")}
         </Text>
       )}
 
+      {/* Corps de la lettre */}
       <View style={styles.body}>
-        {paras.map((p, i) => <Text key={i} style={styles.paragraph}>{p}</Text>)}
+        {paras.map((paragraph, index) => (
+          <Text key={index} style={styles.paragraph}>
+            {paragraph}
+          </Text>
+        ))}
       </View>
 
+      {/* Signature */}
       <View style={styles.signature}>
-        <Text>Je vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.</Text>
+        <Text>
+          Je vous prie d&apos;agréer, Madame, Monsieur, l&apos;expression de mes salutations distinguées.
+        </Text>
         <View style={{ height: 24 }} />
         <Text>{props.signName}</Text>
       </View>
 
+      {/* Pied de page avec numérotation */}
       <Text
         style={styles.footer}
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} / ${totalPages}`}
@@ -126,26 +188,41 @@ function isReadableStream(u: unknown): u is ReadableStream<Uint8Array> {
 async function readableStreamToBuffer(stream: ReadableStream<Uint8Array>): Promise<Buffer> {
   const reader = stream.getReader()
   const chunks: Uint8Array[] = []
+  
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const { done, value } = await reader.read()
     if (done) break
     if (value) chunks.push(value)
   }
-  const total = chunks.reduce((n, c) => n + c.length, 0)
+  
+  const total = chunks.reduce((sum, chunk) => sum + chunk.length, 0)
   const merged = new Uint8Array(total)
   let offset = 0
-  for (const c of chunks) { merged.set(c, offset); offset += c.length }
+  
+  for (const chunk of chunks) { 
+    merged.set(chunk, offset)
+    offset += chunk.length 
+  }
+  
   return Buffer.from(merged)
 }
 
 export async function renderLetterPdfBuffer(args: {
-  sender: { firstName: string; lastName: string; address: string; zipCode: string; city: string }
+  sender: { 
+    firstName: string
+    lastName: string
+    address: string
+    zipCode: string
+    city: string 
+  }
   destLines: string[]
   dateStr: string
   subject: string
   finalText: string
-  metaLines?: string[] // ← on peut en passer depuis la route
+  metaLines?: string[]
 }): Promise<Buffer> {
+  
   const doc: ReactElement<DocumentProps> = createLetterDocument({
     sender: {
       name: `${args.sender.firstName} ${args.sender.lastName}`,
@@ -162,22 +239,38 @@ export async function renderLetterPdfBuffer(args: {
 
   const instance = pdf(doc) as unknown as PDFInstance
 
+  // Tentative de conversion en Buffer selon les méthodes disponibles
   if (typeof instance.toBuffer === "function") {
-    const out = await instance.toBuffer()
-    if (Buffer.isBuffer(out)) return out
-    if (out instanceof Uint8Array) return Buffer.from(out)
-    if (isReadableStream(out)) return readableStreamToBuffer(out)
-    if (typeof out === "string") return Buffer.from(out, "binary")
+    const output = await instance.toBuffer()
+    
+    if (Buffer.isBuffer(output)) {
+      return output
+    }
+    
+    if (output instanceof Uint8Array) {
+      return Buffer.from(output)
+    }
+    
+    if (isReadableStream(output)) {
+      return readableStreamToBuffer(output)
+    }
+    
+    if (typeof output === "string") {
+      return Buffer.from(output, "binary")
+    }
   }
+  
   if (typeof instance.toBlob === "function") {
     const blob = await instance.toBlob()
-    const ab = await blob.arrayBuffer()
-    return Buffer.from(ab)
+    const arrayBuffer = await blob.arrayBuffer()
+    return Buffer.from(arrayBuffer)
   }
+  
   if (typeof instance.toString === "function") {
-    const res = instance.toString()
-    const str = isPromiseLike<string>(res) ? await res : res
-    return Buffer.from(str, "binary")
+    const result = instance.toString()
+    const stringResult = isPromiseLike<string>(result) ? await result : result
+    return Buffer.from(stringResult, "binary")
   }
+  
   throw new Error("Impossible de convertir le PDF en Buffer dans cet environnement.")
 }

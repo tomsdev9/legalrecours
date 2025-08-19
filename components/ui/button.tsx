@@ -36,10 +36,18 @@ export interface ButtonProps
   extends Omit<HTMLMotionProps<"button">, "onDrag" | "onDragStart" | "onDragEnd">,
     VariantProps<typeof buttonVariants> {
   loading?: boolean
+  asChild?: boolean
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, loading = false, children, ...props }, ref) => {
+  ({ className, variant, size, loading = false, asChild = false, children, ...props }, ref) => {
+    if (asChild) {
+      return React.cloneElement(children as React.ReactElement<any>, {
+        className: cn(buttonVariants({ variant, size, className })),
+        ...props,
+      })
+    }
+
     const Component = motion.button
 
     return (

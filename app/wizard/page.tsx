@@ -3,8 +3,8 @@ import WizardContainer from '@/components/wizard/WizardContainer'
 
 export const metadata: Metadata = {
   title: 'Assistant IA - Générer votre courrier | LegalRecours.fr',
-  description: 'Générez votre courrier de réclamation personnalisé en 2 minutes. CAF, CPAM, Pôle Emploi - Conformité juridique garantie.',
-  keywords: 'courrier réclamation, CAF, CPAM, Pôle Emploi, assistant juridique, IA, droit administratif',
+  description: 'Générez votre courrier de réclamation personnalisé en 2 minutes. CAF, CPAM, France Travail - Conformité juridique garantie.',
+  keywords: 'courrier réclamation, CAF, CPAM, France Travail, assistant juridique, IA, droit administratif',
   openGraph: {
     title: 'Générer votre courrier de réclamation | LegalRecours.fr',
     description: 'Assistant IA pour créer des courriers juridiquement corrects en 2 minutes',
