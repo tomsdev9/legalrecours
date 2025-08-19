@@ -14,16 +14,11 @@ export async function GET(req: Request, context: unknown) {
     })
   }
 
-  // ✅ Force un Uint8Array “pur” (pas Buffer)
-  const u8 =
-    buf instanceof Uint8Array
-      ? new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength) // recrée une vue typée
-      : new Uint8Array(buf as ArrayBufferLike)
+  // ✅ Force un Uint8Array “pur” (copie) pour éviter tout union avec Buffer/SharedArrayBuffer
+  const u8 = buf instanceof Uint8Array ? new Uint8Array(buf) : new Uint8Array(buf as ArrayBufferLike)
 
-  // ✅ Response accepte très bien un ArrayBuffer
-  const ab = u8.buffer.slice(u8.byteOffset, u8.byteOffset + u8.byteLength)
-
-  return new Response(ab, {
+  // ✅ Response accepte Uint8Array directement
+  return new Response(u8, {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="courrier-${params.id}.pdf"`,
