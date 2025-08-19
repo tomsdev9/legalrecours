@@ -1,8 +1,8 @@
 // /lib/pipeline.ts
-import { getTemplateForCase, injectPartials, buildSubject } from "@/lib/letter-templates"
-import { renderTemplate, cleanupText } from "./letter-templates/templating"
+import { buildDraftForCase } from "@/lib/letter-templates"
+import { cleanupText } from "./letter-templates/templating"
 import { reviseLetterWithAI, stripProtectionBrackets } from "@/lib/ai"
-// Si tu as un type CaseId exporté ; sinon remplace par `string`
+import { subjectForCase } from "@/lib/subject"
 import type { CaseId } from "@/lib/wizard-data"
 
 export type Organism = "CAF" | "CPAM" | "POLE_EMPLOI"
@@ -25,17 +25,14 @@ export type WizardPayload = {
   }
 }
 
-export function makeDraftFromWizard(payload: WizardPayload) {
-  const base = getTemplateForCase(payload.selectedCase as CaseId)
-  const withPartials = injectPartials(base, payload.selectedOrganism)
-  const subject = buildSubject(payload.selectedCase as CaseId, payload.contextData as Record<string, string>)
 
-  const data = {
-    firstName: payload.userInfo.firstName,
-    lastName: payload.userInfo.lastName,
-    address: payload.userInfo.address,
-    zipCode: payload.userInfo.zipCode,
-    city: payload.userInfo.city,
+export function makeDraftFromWizard(payload: WizardPayload) {
+  const subject = subjectForCase(payload.selectedCase as CaseId, payload.contextData)
+
+  // Helpers calculés (mêmes noms que dans ta version initiale)
+  const augmentedContext: Record<string, unknown> = {
+    ...payload.contextData,
+
     today: new Date().toLocaleDateString("fr-FR"),
 
     optionalLine:
@@ -79,26 +76,43 @@ export function makeDraftFromWizard(payload: WizardPayload) {
         : payload.selectedCase === "POLE_EMPLOI_REFUS_INDEMNISATION"
         ? "un refus d’indemnisation"
         : "la décision vous concernant",
+
     observations: asStr(payload.contextData["observations"]),
     rightsInfo: asStr(payload.contextData["rightsInfo"]),
     employerName: asStr(payload.contextData["employerName"]),
     relances: asStr(payload.contextData["relances"]),
   }
 
-  const merged = renderTemplate(withPartials, data)
-  return cleanupText(merged)
+  // ✅ On n’envoie à `user` QUE ce que la lib attend
+  const { draft } = buildDraftForCase({
+    organism: payload.selectedOrganism,
+    caseId: payload.selectedCase as CaseId,
+    context: augmentedContext,
+    user: {
+      firstName: payload.userInfo.firstName,
+      lastName: payload.userInfo.lastName,
+      address: payload.userInfo.address,
+      city: payload.userInfo.city,
+      zipCode: payload.userInfo.zipCode,
+    },
+  })
+
+  return cleanupText(draft)
 }
 
 export async function finalizeWithAI(
   draft: string,
   meta: { organism: Organism; caseId: CaseId | string }
 ) {
-  const revised = await reviseLetterWithAI(draft, { organism: meta.organism, caseId: meta.caseId as CaseId })
+  const revised = await reviseLetterWithAI(draft, {
+    organism: meta.organism,
+    caseId: meta.caseId as CaseId,
+  })
   const cleaned = stripProtectionBrackets(revised)
   return cleanupText(cleaned)
 }
 
-/* helpers */
+/* helpers (conservés, utilisés pour enrichir le context) */
 function asStr(v: unknown, fallback = "") { return v == null ? fallback : String(v) }
 function mapPriorSteps(v: string) {
   const m: Record<string, string> = { aucune: "Aucune", reclamation: "Réclamation simple", appel: "Appel / Téléphone", mail: "Mail / Espace en ligne" }
