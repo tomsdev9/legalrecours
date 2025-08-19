@@ -3,11 +3,11 @@ import { getPdf } from "@/lib/storage"
 
 export const runtime = "nodejs"
 
-type RouteCtx = { params: { id: string } }
+export async function GET(req: Request, context: unknown) {
+  // ✅ pas d'alias de type ici, Next 15 lève une erreur → on caste localement
+  const { params } = context as { params: { id: string } }
 
-export async function GET(req: Request, { params }: RouteCtx) {
   const buf = await getPdf(params.id)
-
   if (!buf) {
     return new Response(JSON.stringify({ error: "Not found" }), {
       status: 404,
@@ -15,7 +15,7 @@ export async function GET(req: Request, { params }: RouteCtx) {
     })
   }
 
-  // Buffer est un Uint8Array en Node, on force un Uint8Array pour TS
+  // ✅ Response accepte Uint8Array (Buffer est compatible)
   const body = buf instanceof Uint8Array ? buf : new Uint8Array(buf as ArrayBufferLike)
 
   return new Response(body, {
