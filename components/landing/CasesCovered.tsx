@@ -163,8 +163,9 @@ function CasesCovered() {
           className="text-center mb-6 sm:mb-8"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
-            Quels <span className="gradient-text">cas</span> sont couverts ?
-          </h2>
+  Dans quels <span className="gradient-text">cas</span> pouvons-nous vous aider ?
+</h2>
+
         </motion.div>
 
         {/* Tabs */}
