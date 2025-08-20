@@ -2,15 +2,13 @@
 
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, Play, Star } from "lucide-react"
+import { CheckCircle,} from "lucide-react"
 import Link from "next/link"
-import { useState } from "react"
+import Image from "next/image"
 
 const Hero = () => {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
-
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-20 bg-white">
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden py-12 bg-white">
       {/* Background animé */}
       <div className="absolute inset-0">
         <motion.div
@@ -29,7 +27,7 @@ const Hero = () => {
 
       <div className="container-custom relative z-10 text-center">
         {/* SECTION CENTRÉE COMPACTE */}
-        <div className="max-w-4xl mx-auto mb-12">
+        <div className="max-w-4xl mx-auto mb-8">
           {/* Titre principal */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -38,7 +36,7 @@ const Hero = () => {
             className="font-bold mb-4 leading-tight tracking-tight text-2xl sm:text-3xl lg:text-4xl text-gray-900"
             style={{ hyphens: "none" }}
           >
-            Une solution tout-en-un, pour récupérer tous vos droits.
+            Vos recours CAF, CPAM et France Travail générés en quelques clics
           </motion.h1>
 
           {/* Sous-titre */}
@@ -48,134 +46,96 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto mb-6"
           >
-            Créez les meilleurs courriers de recours CAF, CPAM et France Travail avec LegalRecours
+            Contestez un trop-perçu, réclamez un paiement ou refusez une radiation avec des courriers juridiques prêts à envoyer.
           </motion.p>
-
-          {/* CTA principal */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="mb-4"
-          >
-            <Button
-              asChild
-              className="px-8 py-3 bg-[#222223] hover:bg-black text-white font-semibold text-base rounded-xl shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5"
-            >
-              <Link href="/wizard">Créer mon courrier</Link>
-            </Button>
-          </motion.div>
-
-          {/* Avis clients */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="inline-flex items-center gap-4 px-6 py-3 rounded-xl bg-gray-50 border border-gray-200 backdrop-blur-sm mb-6"
-          >
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              ))}
-            </div>
-            <div className="text-sm">
-              <span className="font-bold text-gray-900">4.9/5</span>
-              <span className="text-gray-700 ml-1">(1,247 avis)</span>
-            </div>
-            <div className="text-xs text-gray-600 hidden sm:block">Déjà adopté par les plus grands</div>
-          </motion.div>
-
-          {/* Problèmes résolus */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1 }}
-            className="grid grid-cols-2 gap-2 mb-8 max-w-xs mx-auto sm:flex sm:flex-wrap sm:justify-center sm:max-w-2xl"
-          >
-            {[
-              "Trop-perçu à contester",
-              "Réclamation CAF non versée",
-              "Radiation France Travail",
-              "CPAM remboursement refusé",
-            ].map((problem, i) => (
-              <motion.div
-                key={problem}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.4, delay: 1.1 + i * 0.1 }}
-                className="flex items-center justify-center gap-2 px-3 py-2 min-h-[52px] text-center rounded-xl bg-gray-50 border border-gray-200"
-              >
-                <CheckCircle className="w-3 h-3 shrink-0 text-[#34D28D]" />
-                <span className="text-[13px] sm:text-sm text-gray-800 leading-snug">
-                  {problem}
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
 
-        {/* VIDÉO GRANDE EN DESSOUS */}
+        {/* VIDÉO (portrait) + panneau de droite */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.2 }}
-          className="max-w-5xl mx-auto"
+          className="max-w-6xl mx-auto"
         >
-          <div className="relative">
-            {/* ✅ border supprimée ici */}
-            <div className="relative rounded-2xl bg-white shadow-xl p-3">
-              <div className="absolute inset-0 rounded-2xl bg-gray-50/50"></div>
-              <div className="relative rounded-xl overflow-hidden bg-gray-100 aspect-video">
-                <video
-                  className="w-full h-full object-cover"
-                  autoPlay={isVideoPlaying}
-                  muted
-                  loop
-                  playsInline
-                  poster="/demo-thumbnail.jpg"
-                >
-                  <source src="/demo-legalrecours.mp4" type="video/mp4" />
-                  Votre navigateur ne supporte pas la vidéo.
-                </video>
-                <div
-                  className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/5 transition-colors cursor-pointer"
-                  onClick={() => setIsVideoPlaying(!isVideoPlaying)}
-                >
-                  {!isVideoPlaying && (
-                    <motion.div
-                      initial={{ scale: 0.8 }}
-                      animate={{ scale: 1 }}
-                      whileHover={{ scale: 1.1 }}
-                      className="flex items-center justify-center w-20 h-20 rounded-full bg-white/95 backdrop-blur-sm shadow-lg border border-gray-200"
-                    >
-                      <Play className="w-10 h-10 text-gray-700 ml-1" />
-                    </motion.div>
-                  )}
-                </div>
-              </div>
-              <div className="absolute top-6 left-6 z-10">
-                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-200">
-                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                  <span className="text-xs font-medium text-red-700">Démo en direct</span>
-                </div>
-              </div>
-              <div className="absolute bottom-6 right-6 z-10">
-                <div className="px-3 py-1 rounded-lg bg-gray-900/90 backdrop-blur-sm">
-                  <span className="text-sm text-white font-medium">2:30</span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+            {/* Col gauche : vidéo portrait (autoplay) */}
+            <div className="relative">
+              <div className="relative rounded-2xl bg-white shadow-xl p-3 lg:p-4">
+                <div className="relative rounded-xl overflow-hidden bg-gray-100 aspect-[9/16] sm:aspect-[2/3]">
+                  <video
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    // poster="/legalrecours-hero-poster.jpg" // optionnel si tu ajoutes une vignette
+                  >
+                    <source src="/legalrecours-hero.mp4" type="video/mp4" />
+                    Votre navigateur ne supporte pas la vidéo.
+                  </video>
                 </div>
               </div>
             </div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.4 }}
-              className="text-center mt-6"
-            >
-              <p className="text-base text-gray-800 mb-2">
-                🎯 <span className="font-medium text-[#34D28D]">Processus complet</span> en 2 minutes
+
+            {/* Col droite : pitch + mini-card document */}
+            <div className="flex flex-col justify-center gap-5 lg:gap-6 text-left max-w-xl mx-auto lg:mx-0">
+              {/* Chip */}
+              <div className="inline-flex items-center w-fit gap-2 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-xs font-medium text-gray-700">
+                IA juridique • Courriers conformes
+              </div>
+
+              {/* Titre + pitch */}
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">
+                Plus de galère&nbsp;: on génère votre courrier, <span className="text-[#34D28D]">vous l’envoyez</span>.
+              </h3>
+              <p className="text-gray-700 text-sm sm:text-base">
+                Notre IA prépare un <span className="font-medium">PDF prêt à l’emploi</span> en ~2 minutes&nbsp;:
+                base légale, formulation pro, pièces à joindre et adresse LRAR. Vous téléchargez, signez, c’est parti.
               </p>
-              <p className="text-sm text-gray-600">Du diagnostic à la génération PDF</p>
-            </motion.div>
+
+              {/* Liste des bénéfices */}
+              <ul className="space-y-2 text-sm sm:text-base text-gray-800">
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-[#34D28D]" />
+                  CAF, CPAM, France Travail : modèles adaptés.
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-[#34D28D]" />
+                  Délais et voies de recours clairement indiqués.
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1 inline-block h-2.5 w-2.5 rounded-full bg-[#34D28D]" />
+                  Téléchargement immédiat, paiement unique.
+                </li>
+              </ul>
+
+              {/* CTA */}
+              <div className="pt-1">
+                <Button
+                  asChild
+                  className="px-5 py-3 bg-[#222223] hover:bg-black text-white font-medium rounded-xl shadow-md transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
+                >
+                  <Link href="/wizard">Générer mon courrier</Link>
+                </Button>
+              </div>
+
+              {/* Mini card document (floutée + inclinée) */}
+              <div className="relative w-full max-w-sm mx-auto lg:mx-0">
+                <div className="bg-white rounded-2xl shadow-xl p-3 border border-gray-200 rotate-[-3deg]">
+                  <div className="relative rounded-xl overflow-hidden">
+                    <Image
+                      src="/modellegalrecours.png"
+                      alt="Aperçu du document PDF LegalRecours"
+                      width={900}
+                      height={1200}
+                      sizes="(max-width: 640px) 100vw, 400px"
+                      priority
+                      className="w-full h-auto object-cover filter blur-[1px] brightness-[1.02]"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -184,7 +144,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.6 }}
-          className="flex justify-center gap-8 mt-12"
+          className="flex justify-center gap-8 mt-8"
         >
           {[
             { number: "97%", label: "Taux de réussite" },

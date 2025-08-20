@@ -50,7 +50,7 @@ const FAQ = () => {
   ]
 
   return (
-    <section id="faq" className="py-9 sm:py-20 lg:py-24 relative overflow-hidden px-2.5 sm:px-4">
+    <section id="faq" className="py-8 sm:py-12 lg:py-16 relative overflow-hidden px-2.5 sm:px-4">
       {/* Background - adapté fond blanc */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
@@ -74,7 +74,7 @@ const FAQ = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-8 sm:mb-16"
+          className="text-center mb-6 sm:mb-10"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-900">
             Questions <span className="gradient-text">fréquentes</span>
@@ -90,7 +90,7 @@ const FAQ = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 sm:mb-16"
+                      className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 sm:mb-10"
         >
           {quickFacts.map((fact) => {
             const Icon = fact.icon
@@ -157,7 +157,7 @@ const FAQ = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
-          className="text-center mt-8 sm:mt-16"
+                      className="text-center mt-6 sm:mb-10"
         >
           <div className="glass-white border border-gray-200 rounded-xl p-6 max-w-2xl mx-auto shadow-lg">
             <h3 className="text-xl font-bold mb-3 text-gray-900">Besoin d&apos;un coup de main ?</h3>

@@ -67,8 +67,8 @@ export const ORGANISMS = {
   },
   POLE_EMPLOI: {
     key: "POLE_EMPLOI",
-    name: "Pôle Emploi",
-    shortName: "Pôle Emploi",
+    name: "France Travail",
+    shortName: "France Travail",
     description:
       "Indemnisation ARE, radiations, attestations employeur et réexamens de droits.",
   },

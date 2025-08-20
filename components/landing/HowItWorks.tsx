@@ -33,15 +33,9 @@ const HowItWorks = () => {
     },
   ]
 
-  const journey: { icon: React.ComponentType<{ className?: string }>; title: string; note: string }[] = [
-    { icon: CheckCircle, title: "Diagnostic rapide", note: "Vérification de la contestabilité de la décision." },
-    { icon: Mail, title: "Envoi recommandé", note: "Conseils pour LRAR + pièces à joindre." },
-    { icon: CalendarClock, title: "Suivi des délais", note: "Rappels des dates clés (silence, relance, contentieux)." },
-    { icon: Repeat2, title: "Relance / Réexamen", note: "Modèles fournis si pas de réponse ou refus." },
-  ]
 
   return (
-    <section id="comment-ca-marche" className="py-8 sm:py-12 lg:py-16 relative overflow-hidden">
+    <section id="comment-ca-marche" className="py-6 sm:py-10 lg:py-14 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
         <motion.div
@@ -65,7 +59,7 @@ const HowItWorks = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-8 sm:mb-12"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-gray-900">
             Comment <span className="gradient-text">ça marche</span> ?
@@ -76,7 +70,7 @@ const HowItWorks = () => {
         </motion.div>
 
         {/* Steps */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12 sm:mb-16 justify-items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 sm:mb-12 justify-items-center">
           {steps.map((step, index) => {
             const Icon = step.icon
             return (
@@ -113,35 +107,6 @@ const HowItWorks = () => {
             )
           })}
         </div>
-
-        {/* Timeline "jusqu'au bout" */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto mb-12 sm:mb-16"
-        >
-          <h3 className="text-2xl font-bold text-center mb-6 text-gray-900">
-            On vous guide <span className="gradient-text">jusqu&apos;au bout</span>
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {journey.map((j) => {
-              const Icon = j.icon
-              return (
-                <div key={j.title} className="glass-white border border-gray-100 rounded-xl p-6 flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
-                    <Icon className="w-6 h-6 text-gray-600" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900 text-base md:text-lg">{j.title}</p>
-                    <p className="text-sm md:text-base text-muted">{j.note}</p>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </motion.div>
 
         {/* CTA */}
         <motion.div

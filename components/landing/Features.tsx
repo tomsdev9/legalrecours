@@ -44,7 +44,7 @@ const Features = () => {
   ]
 
   return (
-    <section className="py-8 sm:py-12 lg:py-16 relative overflow-hidden px-4">
+    <section className="py-6 sm:py-10 lg:py-14 relative overflow-hidden px-4">
       {/* Background - adapté fond blanc */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
@@ -68,7 +68,7 @@ const Features = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-8 sm:mb-12"
+          className="text-center mb-6 sm:mb-8"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-900">
             C’est quoi <span className="gradient-text">LegalRecours</span> ?
@@ -79,7 +79,7 @@ const Features = () => {
         </motion.div>
 
         {/* Main features */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-6 sm:mb-8">
           {mainFeatures.map((feature, index) => {
             const Icon = feature.icon
             return (
@@ -102,7 +102,7 @@ const Features = () => {
         </div>
 
         {/* Bandeau preuve "sobre" */}
-        <div className="mt-8 sm:mt-10 flex items-center justify-center gap-3 text-xs sm:text-sm text-muted">
+        <div className="mt-6 sm:mt-8 flex items-center justify-center gap-3 text-xs sm:text-sm text-muted">
           <Scale className="w-4 h-4" />
           <span>Indicateurs internes sur dossiers traités. Le résultat dépend de votre situation et des justificatifs fournis.</span>
         </div>
